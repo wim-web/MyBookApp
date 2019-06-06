@@ -1709,6 +1709,14 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -1721,18 +1729,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      DataOfBook: {}
+    };
   },
   props: {
-    book: {
+    AllDataOfBook: {
       type: Object,
       required: true
     }
   },
   methods: {
-    addBookMylist: function addBookMylist() {
-      alert('add');
-    }
+    addBookMylist: function () {
+      var _addBookMylist = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(DataOfBook) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios.post("/api/books", DataOfBook);
+
+              case 2:
+                response = _context.sent;
+                console.log(response);
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function addBookMylist(_x) {
+        return _addBookMylist.apply(this, arguments);
+      }
+
+      return addBookMylist;
+    }()
+  },
+  created: function created() {
+    this.DataOfBook = {
+      'id': this.AllDataOfBook.id,
+      'thumbnail_path': this.AllDataOfBook.volumeInfo.imageLinks.thumbnail,
+      'url': this.AllDataOfBook.volumeInfo.infoLink,
+      'title': this.AllDataOfBook.volumeInfo.title
+    };
   }
 });
 
@@ -37912,11 +37957,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("img", { attrs: { src: _vm.book.volumeInfo.imageLinks.thumbnail } }),
+    _c("img", { attrs: { src: _vm.DataOfBook.thumbnail_path } }),
     _vm._v(" "),
     _c("p", [
-      _c("a", { attrs: { href: _vm.book.volumeInfo.infoLink } }, [
-        _vm._v(_vm._s(_vm.book.volumeInfo.title))
+      _c("a", { attrs: { href: _vm.DataOfBook.url } }, [
+        _vm._v(_vm._s(_vm.DataOfBook.title))
       ])
     ]),
     _vm._v(" "),
@@ -37926,7 +37971,7 @@ var render = function() {
         staticClass: "btn btn-outline-primary",
         on: {
           click: function($event) {
-            return _vm.addBookMylist()
+            return _vm.addBookMylist(_vm.DataOfBook)
           }
         }
       },
@@ -38017,7 +38062,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm._l(_vm.books, function(book) {
-        return _c("Book", { key: book.id, attrs: { book: book } })
+        return _c("Book", { key: book.id, attrs: { AllDataOfBook: book } })
       })
     ],
     2

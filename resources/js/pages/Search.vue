@@ -7,7 +7,7 @@
         
         <Book v-for="book in books"
                 :key="book.id"
-                :book="book"
+                :AllDataOfBook="book"
         />
     </div>
 </template>

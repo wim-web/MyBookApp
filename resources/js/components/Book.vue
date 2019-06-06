@@ -2,9 +2,9 @@
     <!-- thumbnail, title, url,  -->
     <!-- status, review,  -->
     <div>
-        <img :src="book.volumeInfo.imageLinks.thumbnail">
-        <p><a :href="book.volumeInfo.infoLink">{{ book.volumeInfo.title }}</a></p>
-        <button class="btn btn-outline-primary" @click="addBookMylist()">mybookに追加</button>
+        <img :src="DataOfBook.thumbnail_path">
+        <p><a :href="DataOfBook.url">{{ DataOfBook.title }}</a></p>
+        <button class="btn btn-outline-primary" @click="addBookMylist(DataOfBook)">mybookに追加</button>
     </div>
 </template>
 
@@ -12,19 +12,28 @@
 export default {
     data () {
         return {
-
+            DataOfBook: {},
         }
     },
     props: {
-        book: {
+        AllDataOfBook: {
             type: Object,
             required: true,
         }
     },
     methods: {
-        addBookMylist () {
-            alert('add');
+        async addBookMylist (DataOfBook) {
+            const response = await axios.post(`/api/books`, DataOfBook);
+            console.log(response);
         }
+    },
+    created () {
+        this.DataOfBook = {
+            'id':               this.AllDataOfBook.id,
+            'thumbnail_path':   this.AllDataOfBook.volumeInfo.imageLinks.thumbnail,
+            'url':              this.AllDataOfBook.volumeInfo.infoLink,
+            'title':            this.AllDataOfBook.volumeInfo.title,
+        };
     }
 }
 </script>

@@ -28,7 +28,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 import router from './router';
-import App from './App';
+import App from './App.vue';
 
 const app = new Vue({
     el: '#app',

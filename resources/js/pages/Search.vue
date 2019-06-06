@@ -3,15 +3,17 @@
         <h2>searchするよ</h2>
         <input v-model="searchWord" type="text" placeholder="title">
         <input v-model="searchAuthor" type="text" placeholder="author">
-        <button class="btn btn-primary" @click="fetchBook()">submit</button>
-        <div v-for="book in books">
-            <p>{{ book.id }}</p>
-            <p><a :href="book.volumeInfo.infoLink">{{ book.volumeInfo.title }}</a></p>
-        </div>
+        <button class="btn btn-primary" @click="fetchBooksData()">submit</button>
+        
+        <Book v-for="book in books"
+                :key="book.id"
+                :book="book"
+        />
     </div>
 </template>
 
 <script>
+import Book from '../components/Book';
 export default {
     data () {
         return {
@@ -20,8 +22,11 @@ export default {
             books: [],
         }
     },
+    components: {
+        Book,
+    },
     methods: {
-        async fetchBook () {
+        async fetchBooksData () {
             const makedUri = this.makeUri(this.searchWord, this.searchAuthor);
             if (!makedUri) { return alert('どちらか一方を入力しよう') };
             console.log(makedUri)

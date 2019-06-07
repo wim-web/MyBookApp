@@ -2,8 +2,8 @@
     <div>
         <main>
             <div class="container">
+                header
                 <router-view></router-view>
-                <router-link to="/search">search</router-link>
             </div>
         </main>
     </div>

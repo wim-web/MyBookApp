@@ -15,8 +15,9 @@ class BookController extends Controller
     }
     public function store(Request $request)
     {
-        $DataOfBook = $request->all();
-        $this->book->fill($DataOfBook)->save();
+        $bookData = $request->all();
+        $this->book->fill(['user_id' => 1]);
+        $this->book->fill($bookData)->save();
         return 'uuu';
     }
 }

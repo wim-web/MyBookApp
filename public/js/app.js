@@ -1845,7 +1845,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 //axiosだとcorsに引っかかるので、ここだけajax
                 params = this.setParams(this.inputTitle);
                 $.ajax(params).done(function (data) {
-                  return console.log(data);
+                  console.log(data);
                   _this.books = data.Items;
                 }).fail(function (data) {
                   //todo:error handling
@@ -1875,7 +1875,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           applicationId: '1019399324990976605',
           keyword: inputTitle,
           formatVersion: 2,
-          elements: 'count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl,isbn'
+          elements: 'count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl'
         }
       };
     }

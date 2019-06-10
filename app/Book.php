@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     protected $fillable = [
-        'id',
-        'url',
-        'thumbnail_path',
+        'user_id',
         'title',
+        'itemCaption',
+        'author',
+        'itemUrl',
+        'largeImageUrl',
     ];
 }

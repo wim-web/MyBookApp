@@ -33,7 +33,7 @@ export default {
             $.ajax(
                 params
             ).done(data => {
-                return console.log(data);
+                console.log(data);
                 this.books = data.Items
             }).fail(data => {
                 //todo:error handling
@@ -49,7 +49,7 @@ export default {
                     applicationId: '1019399324990976605', 
                     keyword: inputTitle,
                     formatVersion: 2,
-                    elements: 'count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl,isbn',
+                    elements: 'count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl',
                 },
             }
         }

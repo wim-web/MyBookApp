@@ -18,7 +18,7 @@ export default {
     },
     methods: {
         async addBookMylist (bookData) {
-            const response = await axios.post(`/api/books`, DataOfBook);
+            const response = await axios.post(`/api/books`, bookData);
             console.log(response);
         }
     },

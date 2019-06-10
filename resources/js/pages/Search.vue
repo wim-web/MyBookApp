@@ -33,9 +33,10 @@ export default {
             $.ajax(
                 params
             ).done(data => {
+                return console.log(data);
                 this.books = data.Items
-                console.log(data);
             }).fail(data => {
+                //todo:error handling
                 console.log(data.responseJSON);
             });
         },

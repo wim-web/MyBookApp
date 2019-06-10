@@ -1745,7 +1745,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post("/api/books", DataOfBook);
+                return axios.post("/api/books", bookData);
 
               case 2:
                 response = _context.sent;
@@ -1845,9 +1845,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 //axiosだとcorsに引っかかるので、ここだけajax
                 params = this.setParams(this.inputTitle);
                 $.ajax(params).done(function (data) {
+                  return console.log(data);
                   _this.books = data.Items;
-                  console.log(data);
                 }).fail(function (data) {
+                  //todo:error handling
                   console.log(data.responseJSON);
                 });
 

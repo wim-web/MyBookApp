@@ -1728,13 +1728,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      DataOfBook: {}
-    };
-  },
   props: {
-    AllDataOfBook: {
+    bookData: {
       type: Object,
       required: true
     }
@@ -1743,7 +1738,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     addBookMylist: function () {
       var _addBookMylist = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(DataOfBook) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(bookData) {
         var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -1770,15 +1765,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return addBookMylist;
     }()
-  },
-  created: function created() {
-    this.DataOfBook = {
-      'id': this.AllDataOfBook.id,
-      'thumbnail_path': this.AllDataOfBook.volumeInfo.imageLinks.thumbnail,
-      'url': this.AllDataOfBook.volumeInfo.infoLink,
-      'title': this.AllDataOfBook.volumeInfo.title
-    };
-  }
+  } // created () {
+  //     this.DataOfBook = {
+  //         'id':               this.AllDataOfBook.id,
+  //         'thumbnail_path':   this.AllDataOfBook.volumeInfo.imageLinks.thumbnail,
+  //         'url':              this.AllDataOfBook.volumeInfo.infoLink,
+  //         'title':            this.AllDataOfBook.volumeInfo.title,
+  //     };
+  // }
+
 });
 
 /***/ }),
@@ -1832,35 +1827,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _fetchBooksData = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var googleUri, params, response;
+        var _this = this;
+
+        var params;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                googleUri = 'https://www.googleapis.com/books/v1/volumes';
-                params = this.setParams(this.inputTitle, this.inputAuthor);
-
-                if (params) {
-                  _context.next = 4;
+                if (this.inputTitle) {
+                  _context.next = 2;
                   break;
                 }
 
-                return _context.abrupt("return", alert('どちらか一方を入力しよう'));
+                return _context.abrupt("return", alert('fill into brank'));
 
-              case 4:
-                ; //Todo:errorハンドリング
-
-                _context.next = 7;
-                return axios.get(googleUri, params)["catch"](function (err) {
-                  return err;
+              case 2:
+                //axiosだとcorsに引っかかるので、ここだけajax
+                params = this.setParams(this.inputTitle);
+                $.ajax(params).done(function (data) {
+                  _this.books = data.Items;
+                  console.log(data);
+                }).fail(function (data) {
+                  console.log(data.responseJSON);
                 });
 
-              case 7:
-                response = _context.sent;
-                console.log(response);
-                this.books = response.data.items;
-
-              case 10:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -1874,29 +1865,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return fetchBooksData;
     }(),
-    setParams: function setParams(inputTitle, inputAuthor) {
-      if (!inputTitle && !inputAuthor) {
-        return false;
-      }
-
-      ;
-      var titleQuery = 'intitle:' + inputTitle;
-      var authorQuery = 'inauthor:' + inputAuthor;
-      var query = titleQuery + '+' + authorQuery;
-
-      if (!inputTitle) {
-        query = authorQuery;
-      }
-
-      if (!inputAuthor) {
-        query = titleQuery;
-      }
-
+    setParams: function setParams(inputTitle) {
       return {
-        params: {
-          q: query,
-          filter: 'paid-ebooks',
-          langRestrict: 'ja'
+        url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404',
+        type: 'GET',
+        datatype: 'json',
+        data: {
+          applicationId: '1019399324990976605',
+          keyword: inputTitle,
+          formatVersion: 2,
+          elements: 'count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl,isbn'
         }
       };
     }
@@ -37965,11 +37943,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("img", { attrs: { src: _vm.DataOfBook.thumbnail_path } }),
+    _c("img", { attrs: { src: _vm.bookData.largeImageUrl } }),
     _vm._v(" "),
     _c("p", [
-      _c("a", { attrs: { href: _vm.DataOfBook.url } }, [
-        _vm._v(_vm._s(_vm.DataOfBook.title))
+      _c("a", { attrs: { href: _vm.bookData.itemUrl } }, [
+        _vm._v(_vm._s(_vm.bookData.title))
       ])
     ]),
     _vm._v(" "),
@@ -37979,7 +37957,7 @@ var render = function() {
         staticClass: "btn btn-outline-primary",
         on: {
           click: function($event) {
-            return _vm.addBookMylist(_vm.DataOfBook)
+            return _vm.addBookMylist(_vm.bookData)
           }
         }
       },
@@ -38070,7 +38048,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm._l(_vm.books, function(book) {
-        return _c("Book", { key: book.id, attrs: { AllDataOfBook: book } })
+        return _c("Book", { key: book.title, attrs: { bookData: book } })
       })
     ],
     2

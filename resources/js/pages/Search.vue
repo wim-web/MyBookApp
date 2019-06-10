@@ -6,8 +6,8 @@
         <button class="btn btn-primary" @click="fetchBooksData()">submit</button>
         
         <Book v-for="book in books"
-                :key="book.id"
-                :AllDataOfBook="book"
+                :key="book.title"
+                :bookData="book"
         />
     </div>
 </template>
@@ -27,31 +27,30 @@ export default {
     },
     methods: {
         async fetchBooksData() {
-            const googleUri = 'https://www.googleapis.com/books/v1/volumes';
-            const params = this.setParams(this.inputTitle, this.inputAuthor);
-            if (!params) { return alert('どちらか一方を入力しよう') };
-            //Todo:errorハンドリング
-            const response = await axios.get(googleUri, params).catch(err => err);
-            console.log(response);
-            this.books = response.data.items;
+            if (!this.inputTitle) return alert('fill into brank');
+            //axiosだとcorsに引っかかるので、ここだけajax
+            const params = this.setParams(this.inputTitle);
+            $.ajax(
+                params
+            ).done(data => {
+                this.books = data.Items
+                console.log(data);
+            }).fail(data => {
+                console.log(data.responseJSON);
+            });
         },
-        setParams(inputTitle, inputAuthor) {
-            if (!inputTitle && !inputAuthor) { return false };
-
-            const titleQuery = 'intitle:' + inputTitle;
-            const authorQuery = 'inauthor:' + inputAuthor;
-            let query = titleQuery + '+' + authorQuery;
-
-            if (!inputTitle) { query = authorQuery }
-            if (!inputAuthor) { query = titleQuery }
-
+        setParams(inputTitle) {
             return {
-                params:{
-                    q: query,
-                    filter: 'paid-ebooks',
-                    langRestrict: 'ja',
-                }
-            };
+                url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404',
+                type: 'GET',
+                datatype: 'json',
+                data: {
+                    applicationId: '1019399324990976605', 
+                    keyword: inputTitle,
+                    formatVersion: 2,
+                    elements: 'count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl,isbn',
+                },
+            }
         }
     },
 }

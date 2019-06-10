@@ -1819,8 +1819,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      searchWord: '',
-      searchAuthor: '',
+      inputTitle: '',
+      inputAuthor: '',
       books: []
     };
   },
@@ -1832,30 +1832,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _fetchBooksData = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var makedUri, response;
+        var googleUri, params, response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                makedUri = this.makeUri(this.searchWord, this.searchAuthor);
+                googleUri = 'https://www.googleapis.com/books/v1/volumes';
+                params = this.setParams(this.inputTitle, this.inputAuthor);
 
-                if (makedUri) {
-                  _context.next = 3;
+                if (params) {
+                  _context.next = 4;
                   break;
                 }
 
                 return _context.abrupt("return", alert('どちらか一方を入力しよう'));
 
-              case 3:
-                ;
-                console.log(makedUri); //Todo:errorハンドリング
+              case 4:
+                ; //Todo:errorハンドリング
 
                 _context.next = 7;
-                return axios.get(makedUri);
+                return axios.get(googleUri, params)["catch"](function (err) {
+                  return err;
+                });
 
               case 7:
                 response = _context.sent;
-                console.log(response.data);
+                console.log(response);
                 this.books = response.data.items;
 
               case 10:
@@ -1872,21 +1874,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return fetchBooksData;
     }(),
-    makeUri: function makeUri(searchWord, searchAuthor) {
-      if (!searchWord && !searchAuthor) {
+    setParams: function setParams(inputTitle, inputAuthor) {
+      if (!inputTitle && !inputAuthor) {
         return false;
       }
 
       ;
-      var baseUri = 'https://www.googleapis.com/books/v1/volumes?';
-      var qOfWord = 'q=intitle:' + searchWord;
-      var qOfAuthor = 'q=inauthor:' + searchAuthor;
-      var filter = 'filter=paid-ebooks';
-      var langRestrict = 'langRestrict=ja';
-      baseUri = searchWord ? baseUri += qOfWord : baseUri;
-      baseUri = searchAuthor ? baseUri += qOfAuthor : baseUri;
-      var makedUri = baseUri + '&' + filter + '&' + langRestrict;
-      return makedUri;
+      var titleQuery = 'intitle:' + inputTitle;
+      var authorQuery = 'inauthor:' + inputAuthor;
+      var query = titleQuery + '+' + authorQuery;
+
+      if (!inputTitle) {
+        query = authorQuery;
+      }
+
+      if (!inputAuthor) {
+        query = titleQuery;
+      }
+
+      return {
+        params: {
+          q: query,
+          filter: 'paid-ebooks',
+          langRestrict: 'ja'
+        }
+      };
     }
   }
 });
@@ -38007,18 +38019,18 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.searchWord,
-            expression: "searchWord"
+            value: _vm.inputTitle,
+            expression: "inputTitle"
           }
         ],
         attrs: { type: "text", placeholder: "title" },
-        domProps: { value: _vm.searchWord },
+        domProps: { value: _vm.inputTitle },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.searchWord = $event.target.value
+            _vm.inputTitle = $event.target.value
           }
         }
       }),
@@ -38028,18 +38040,18 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.searchAuthor,
-            expression: "searchAuthor"
+            value: _vm.inputAuthor,
+            expression: "inputAuthor"
           }
         ],
         attrs: { type: "text", placeholder: "author" },
-        domProps: { value: _vm.searchAuthor },
+        domProps: { value: _vm.inputAuthor },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.searchAuthor = $event.target.value
+            _vm.inputAuthor = $event.target.value
           }
         }
       }),

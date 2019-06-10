@@ -1,8 +1,8 @@
 <template>
     <div>
         <h2>searchするよ</h2>
-        <input v-model="searchWord" type="text" placeholder="title">
-        <input v-model="searchAuthor" type="text" placeholder="author">
+        <input v-model="inputTitle" type="text" placeholder="title">
+        <input v-model="inputAuthor" type="text" placeholder="author">
         <button class="btn btn-primary" @click="fetchBooksData()">submit</button>
         
         <Book v-for="book in books"
@@ -17,8 +17,8 @@ import Book from '../components/Book';
 export default {
     data () {
         return {
-            searchWord: '',
-            searchAuthor: '',
+            inputTitle: '',
+            inputAuthor: '',
             books: [],
         }
     },
@@ -26,30 +26,32 @@ export default {
         Book,
     },
     methods: {
-        async fetchBooksData () {
-            const makedUri = this.makeUri(this.searchWord, this.searchAuthor);
-            if (!makedUri) { return alert('どちらか一方を入力しよう') };
-            console.log(makedUri)
+        async fetchBooksData() {
+            const googleUri = 'https://www.googleapis.com/books/v1/volumes';
+            const params = this.setParams(this.inputTitle, this.inputAuthor);
+            if (!params) { return alert('どちらか一方を入力しよう') };
             //Todo:errorハンドリング
-            const response = await axios.get(makedUri);
-            console.log(response.data);
+            const response = await axios.get(googleUri, params).catch(err => err);
+            console.log(response);
             this.books = response.data.items;
         },
-        makeUri (searchWord, searchAuthor) {
-            if (!searchWord && !searchAuthor) { return false };
-            let baseUri = 'https://www.googleapis.com/books/v1/volumes?';
-            const qOfWord = 'q=intitle:' + searchWord;
-            const qOfAuthor = 'q=inauthor:' + searchAuthor;
-            const filter = 'filter=paid-ebooks';
-            const langRestrict = 'langRestrict=ja';
+        setParams(inputTitle, inputAuthor) {
+            if (!inputTitle && !inputAuthor) { return false };
 
-            baseUri = searchWord ? baseUri += qOfWord : baseUri;
-            baseUri = searchAuthor ? baseUri += qOfAuthor : baseUri;
-            const makedUri = baseUri
-                            + '&' + filter
-                            + '&' + langRestrict;
+            const titleQuery = 'intitle:' + inputTitle;
+            const authorQuery = 'inauthor:' + inputAuthor;
+            let query = titleQuery + '+' + authorQuery;
 
-            return makedUri;
+            if (!inputTitle) { query = authorQuery }
+            if (!inputAuthor) { query = titleQuery }
+
+            return {
+                params:{
+                    q: query,
+                    filter: 'paid-ebooks',
+                    langRestrict: 'ja',
+                }
+            };
         }
     },
 }

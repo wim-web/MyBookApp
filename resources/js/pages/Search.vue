@@ -2,7 +2,6 @@
     <div>
         <h2>searchするよ</h2>
         <input v-model="inputTitle" type="text" placeholder="title">
-        <input v-model="inputAuthor" type="text" placeholder="author">
         <button class="btn btn-primary" @click="fetchBooksData()">submit</button>
         
         <Book v-for="book in books"

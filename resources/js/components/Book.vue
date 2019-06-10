@@ -22,13 +22,5 @@ export default {
             console.log(response);
         }
     },
-    // created () {
-    //     this.DataOfBook = {
-    //         'id':               this.AllDataOfBook.id,
-    //         'thumbnail_path':   this.AllDataOfBook.volumeInfo.imageLinks.thumbnail,
-    //         'url':              this.AllDataOfBook.volumeInfo.infoLink,
-    //         'title':            this.AllDataOfBook.volumeInfo.title,
-    //     };
-    // }
 }
 </script>

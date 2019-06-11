@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::patch('books/{book}/status', 'BookController@updateStatus');
 Route::resource('books', 'BookController');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

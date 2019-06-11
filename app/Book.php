@@ -13,5 +13,6 @@ class Book extends Model
         'author',
         'itemUrl',
         'largeImageUrl',
+        'status',
     ];
 }

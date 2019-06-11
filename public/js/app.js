@@ -1809,7 +1809,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      myBooks: []
+      myBooks: [],
+      status: {}
     };
   },
   methods: {
@@ -1864,7 +1865,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 _context2.next = 5;
-                return axios["delete"]("/books/".concat(id))["catch"](function (err) {
+                return axios["delete"]("/api/books/".concat(id))["catch"](function (err) {
                   return err;
                 });
 
@@ -1886,6 +1887,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return deleteMyBook;
+    }(),
+    updateStatus: function () {
+      var _updateStatus = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(selectedBook) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.patch("/api/books/".concat(selectedBook.id, "/status"), {
+                  'status': selectedBook.status
+                })["catch"](function (err) {
+                  return err;
+                });
+
+              case 2:
+                response = _context3.sent;
+                console.log(response);
+
+              case 4:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function updateStatus(_x2) {
+        return _updateStatus.apply(this, arguments);
+      }
+
+      return updateStatus;
     }()
   },
   created: function created() {
@@ -38110,7 +38145,7 @@ var render = function() {
       _c("h2", [_vm._v("mypage")]),
       _vm._v(" "),
       _vm._l(_vm.myBooks, function(book) {
-        return _c("div", [
+        return _c("div", { key: book.id }, [
           _c("img", { attrs: { src: book.largeImageUrl } }),
           _vm._v(" "),
           _c("p", [
@@ -38119,7 +38154,58 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(0, true),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: book.status,
+                  expression: "book.status"
+                }
+              ],
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      book,
+                      "status",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  },
+                  function($event) {
+                    return _vm.updateStatus(book)
+                  }
+                ]
+              }
+            },
+            [
+              _c("option", { attrs: { disabled: "", value: "" } }),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "want" } }, [_vm._v("買いたい")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "wait" } }, [_vm._v("積んでる")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "reading" } }, [
+                _vm._v("読んでる")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "finish" } }, [
+                _vm._v("読んだよ")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "ok" } }, [_vm._v("理解した")])
+            ]
+          ),
           _vm._v(" "),
           _c(
             "button",
@@ -38139,26 +38225,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("select", { attrs: { name: "", id: "" } }, [
-      _c("option", { attrs: { value: "" } }, [_vm._v("ー")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "want" } }, [_vm._v("買いたい")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "wait" } }, [_vm._v("積んでる")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "reading" } }, [_vm._v("読んでる")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "finish" } }, [_vm._v("読んだよ")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "ok" } }, [_vm._v("理解した")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -40,4 +40,12 @@ class BookController extends Controller
         
         return $this->user->find(1)->load('books');
     }
+
+    public function updateStatus(Request $request, Book $book)
+    {
+        $status = $request->all();
+        $book->fill($status)->save();
+
+        return $this->user->find(1)->load('books');
+    }
 }

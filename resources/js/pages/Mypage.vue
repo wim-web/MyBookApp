@@ -1,9 +1,8 @@
 <template>
     <div>
-        <h2>mypage</h2>
-        <router-link to="/search">追加する</router-link>
+        <h2 class="text-center mb-4">Mypage</h2>
         <div class="row">
-            <div v-for="book in myBooks" :key="book.id" class="col-12 col-lg-6">
+            <div v-for="book in myBooks" :key="book.id" class="col-12 col-md-6 col-xl-4">
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="inline">

@@ -1835,7 +1835,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1978,6 +1977,12 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6518,7 +6523,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, ".router-enter[data-v-f348271a],\n.router-leave-to[data-v-f348271a] {\n  opacity: 0;\n}\n.router-enter-active[data-v-f348271a],\n.router-leave-active[data-v-f348271a] {\n  transition: opacity 0.5s;\n}", ""]);
+exports.push([module.i, ".router-enter[data-v-f348271a],\n.router-leave-to[data-v-f348271a] {\n  opacity: 0;\n}\n.router-enter-active[data-v-f348271a],\n.router-leave-active[data-v-f348271a] {\n  transition: opacity 0.5s;\n}\n@media (min-width: 768px) {\n.container[data-v-f348271a] {\n    max-width: 800px;\n}\n}\n@media (min-width: 992px) {\n.container[data-v-f348271a] {\n    max-width: 960px;\n}\n}\n@media (min-width: 1200px) {\n.container[data-v-f348271a] {\n    max-width: 1140px;\n}\n}\n.pt-70px[data-v-f348271a] {\n  padding-top: 70px;\n}", ""]);
 
 // exports
 
@@ -38831,16 +38836,89 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "nav",
+      { staticClass: "navbar navbar-expand-md navbar-dark bg-dark fixed-top" },
+      [
+        _c("span", { staticClass: "navbar-brand" }, [_vm._v("Navbar")]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "collapse navbar-collapse",
+            attrs: { id: "navbarNav" }
+          },
+          [
+            _c("ul", { staticClass: "navbar-nav" }, [
+              _c(
+                "li",
+                {
+                  staticClass: "nav-item",
+                  attrs: {
+                    "data-toggle": "collapse",
+                    "data-target": "#navbarNav"
+                  }
+                },
+                [
+                  _c(
+                    "router-link",
+                    { staticClass: "nav-link", attrs: { to: "/mypage" } },
+                    [_vm._v("Mypage")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass: "nav-item",
+                  attrs: {
+                    "data-toggle": "collapse",
+                    "data-target": "#navbarNav"
+                  }
+                },
+                [
+                  _c(
+                    "router-link",
+                    { staticClass: "nav-link", attrs: { to: "/search" } },
+                    [_vm._v("Add")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass: "nav-item",
+                  attrs: {
+                    "data-toggle": "collapse",
+                    "data-target": "#navbarNav"
+                  }
+                },
+                [
+                  _c(
+                    "router-link",
+                    { staticClass: "nav-link", attrs: { to: "/" } },
+                    [_vm._v("logout")]
+                  )
+                ],
+                1
+              )
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
     _c("main", [
       _c(
         "div",
-        { staticClass: "container" },
+        { staticClass: "container pt-70px" },
         [
-          _vm._v("\n            header\n            "),
-          _c("router-link", { attrs: { to: "/" } }, [_vm._v("top")]),
-          _vm._v(" "),
-          _c("router-link", { attrs: { to: "/mypage" } }, [_vm._v("mypage")]),
-          _vm._v(" "),
           _c(
             "transition",
             { attrs: { name: "router", mode: "out-in" } },
@@ -38853,7 +38931,28 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "navbar-toggler",
+        attrs: {
+          type: "button",
+          "data-toggle": "collapse",
+          "data-target": "#navbarNav",
+          "aria-controls": "navbarNav",
+          "aria-expanded": "false",
+          "aria-label": "Toggle navigation"
+        }
+      },
+      [_c("span", { staticClass: "navbar-toggler-icon" })]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -38879,40 +38978,44 @@ var render = function() {
     "div",
     { staticClass: "row" },
     _vm._l(_vm.books, function(book) {
-      return _c("div", { key: book.id, staticClass: "col-12 col-lg-6" }, [
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "inline" }, [
-              _c("div", { staticClass: "p-2" }, [
-                _c("p", { staticClass: "img-wrap" }, [
-                  _c("img", { attrs: { src: book.largeImageUrl } })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "p-2 inline__right" }, [
-                _c("div", { staticClass: "card-title" }, [
-                  _c("a", { attrs: { href: book.itemUrl } }, [
-                    _vm._v(_vm._s(book.title))
+      return _c(
+        "div",
+        { key: book.id, staticClass: "col-12 col-md-6 col-xl-4" },
+        [
+          _c("div", { staticClass: "card mb-3" }, [
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "inline" }, [
+                _c("div", { staticClass: "p-2" }, [
+                  _c("p", { staticClass: "img-wrap" }, [
+                    _c("img", { attrs: { src: book.largeImageUrl } })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "p-2 inline__right" }, [
+                  _c("div", { staticClass: "card-title" }, [
+                    _c("a", { attrs: { href: book.itemUrl } }, [
+                      _vm._v(_vm._s(book.title))
+                    ])
                   ])
                 ])
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-outline-primary",
-              on: {
-                click: function($event) {
-                  return _vm.addBookMylist(book)
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.addBookMylist(book)
+                  }
                 }
-              }
-            },
-            [_vm._v("mybookに追加")]
-          )
-        ])
-      ])
+              },
+              [_vm._v("mybookに追加")]
+            )
+          ])
+        ]
+      )
     }),
     0
   )
@@ -38939,18 +39042,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("h2", [_vm._v("mypage")]),
-      _vm._v(" "),
-      _c("router-link", { attrs: { to: "/search" } }, [_vm._v("追加する")]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row" },
-        _vm._l(_vm.myBooks, function(book) {
-          return _c("div", { key: book.id, staticClass: "col-12 col-lg-6" }, [
+  return _c("div", [
+    _c("h2", { staticClass: "text-center mb-4" }, [_vm._v("Mypage")]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "row" },
+      _vm._l(_vm.myBooks, function(book) {
+        return _c(
+          "div",
+          { key: book.id, staticClass: "col-12 col-md-6 col-xl-4" },
+          [
             _c("div", { staticClass: "card mb-3" }, [
               _c("div", { staticClass: "card-body" }, [
                 _c("div", { staticClass: "inline" }, [
@@ -39045,13 +39147,12 @@ var render = function() {
                 [_vm._v("delete")]
               )
             ])
-          ])
-        }),
-        0
-      )
-    ],
-    1
-  )
+          ]
+        )
+      }),
+      0
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39078,41 +39179,49 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h2", [_vm._v("searchするよ")]),
+      _c("h2", { staticClass: "text-center mb-4" }, [_vm._v("Add Book")]),
       _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.inputTitle,
-            expression: "inputTitle"
-          }
-        ],
-        attrs: { type: "text", placeholder: "title" },
-        domProps: { value: _vm.inputTitle },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
+      _c("form", [
+        _c("div", { staticClass: "input-group mb-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.inputTitle,
+                expression: "inputTitle"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "タイトルで検索" },
+            domProps: { value: _vm.inputTitle },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.inputTitle = $event.target.value
+              }
             }
-            _vm.inputTitle = $event.target.value
-          }
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          on: {
-            click: function($event) {
-              return _vm.fetchBooksData()
-            }
-          }
-        },
-        [_vm._v("submit")]
-      ),
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group-append" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-secondary",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.fetchBooksData()
+                  }
+                }
+              },
+              [_vm._v("search")]
+            )
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c("Book", { attrs: { books: _vm.books } })
     ],
@@ -39141,16 +39250,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm._v("\n    top page\n    "),
-      _c("router-link", { attrs: { to: "/search" } }, [_vm._v("search")]),
-      _vm._v(" "),
-      _c("router-link", { attrs: { to: "/mypage" } }, [_vm._v("mypage")])
-    ],
-    1
-  )
+  return _c("div", [_vm._v("\n    top page\n")])
 }
 var staticRenderFns = []
 render._withStripped = true

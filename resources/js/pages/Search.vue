@@ -1,8 +1,14 @@
 <template>
     <div>
-        <h2>searchするよ</h2>
-        <input v-model="inputTitle" type="text" placeholder="title">
-        <button class="btn btn-primary" @click="fetchBooksData()">submit</button>
+        <h2 class="text-center mb-4">Add Book</h2>
+        <form>
+            <div class="input-group mb-3">
+                <input v-model="inputTitle" class="form-control" type="text" placeholder="タイトルで検索">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" @click.prevent="fetchBooksData()">search</button>
+                </div>
+            </div>
+        </form>
         <Book :books="books" />
     </div>
 </template>

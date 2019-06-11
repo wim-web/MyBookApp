@@ -2,7 +2,7 @@
     <!-- thumbnail, title, url,  -->
     <!-- status, review,  -->
     <div class="row">
-        <div v-for="book in books" :key="book.id" class="col-12 col-lg-6">
+        <div v-for="book in books" :key="book.id" class="col-12 col-md-6 col-xl-4">
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="inline">

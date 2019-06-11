@@ -1,6 +1,7 @@
 <template>
     <div>
         <h2>mypage</h2>
+        <router-link to="/search">追加する</router-link>
         <div class="row">
             <div v-for="book in myBooks" :key="book.id" class="col-12 col-lg-6">
                 <div class="card mb-3">
@@ -40,7 +41,7 @@ export default {
     methods: {
         async fetchMyBooks() {
             //todo: error handling
-            const response = await axios.get('/api/books');
+            const response = await axios.get('/books');
             console.log(response.data.books);
             this.myBooks = response.data.books;
         },
@@ -48,14 +49,14 @@ export default {
             const deleteFlg = confirm('delete?');
             if (!deleteFlg) return;
 
-            const response = await axios.delete(`/api/books/${id}`).catch(err => err);
+            const response = await axios.delete(`/books/${id}`).catch(err => err);
             console.log(response);
             this.myBooks = response.data.books;
         },
         async updateStatus(selectedBook) {
             //todo:error handling
             const response = await axios.patch(
-                `/api/books/${selectedBook.id}/status`,
+                `/books/${selectedBook.id}/status`,
                 { 'status': selectedBook.status }
             ).catch(err => err);
             console.log(response);

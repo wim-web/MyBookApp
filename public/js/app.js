@@ -1745,7 +1745,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post("/api/books", bookData);
+                return axios.post("/books", bookData);
 
               case 2:
                 response = _context.sent;
@@ -1818,6 +1818,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1836,7 +1837,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get('/api/books');
+                return axios.get('/books');
 
               case 2:
                 response = _context.sent;
@@ -1877,7 +1878,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 _context2.next = 5;
-                return axios["delete"]("/api/books/".concat(id))["catch"](function (err) {
+                return axios["delete"]("/books/".concat(id))["catch"](function (err) {
                   return err;
                 });
 
@@ -1910,7 +1911,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return axios.patch("/api/books/".concat(selectedBook.id, "/status"), {
+                return axios.patch("/books/".concat(selectedBook.id, "/status"), {
                   'status': selectedBook.status
                 })["catch"](function (err) {
                   return err;
@@ -38723,7 +38724,14 @@ var render = function() {
       _c(
         "div",
         { staticClass: "container" },
-        [_vm._v("\n            header\n            "), _c("router-view")],
+        [
+          _vm._v("\n            header\n            "),
+          _c("router-link", { attrs: { to: "/" } }, [_vm._v("top")]),
+          _vm._v(" "),
+          _c("router-link", { attrs: { to: "/mypage" } }, [_vm._v("mypage")]),
+          _vm._v(" "),
+          _c("router-view")
+        ],
         1
       )
     ])
@@ -38796,113 +38804,119 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h2", [_vm._v("mypage")]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "row" },
-      _vm._l(_vm.myBooks, function(book) {
-        return _c("div", { key: book.id, staticClass: "col-12 col-lg-6" }, [
-          _c("div", { staticClass: "card mb-3" }, [
-            _c("div", { staticClass: "card-body" }, [
-              _c("div", { staticClass: "inline" }, [
-                _c("div", { staticClass: "p-2" }, [
-                  _c("p", { staticClass: "img-wrap" }, [
-                    _c("img", { attrs: { src: book.largeImageUrl } })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "p-2 inline__right" }, [
-                  _c("div", { staticClass: "card-title" }, [
-                    _c("a", { attrs: { href: book.itemUrl } }, [
-                      _vm._v(_vm._s(book.title))
+  return _c(
+    "div",
+    [
+      _c("h2", [_vm._v("mypage")]),
+      _vm._v(" "),
+      _c("router-link", { attrs: { to: "/search" } }, [_vm._v("追加する")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "row" },
+        _vm._l(_vm.myBooks, function(book) {
+          return _c("div", { key: book.id, staticClass: "col-12 col-lg-6" }, [
+            _c("div", { staticClass: "card mb-3" }, [
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "inline" }, [
+                  _c("div", { staticClass: "p-2" }, [
+                    _c("p", { staticClass: "img-wrap" }, [
+                      _c("img", { attrs: { src: book.largeImageUrl } })
                     ])
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: book.status,
-                          expression: "book.status"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      on: {
-                        change: [
-                          function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              book,
-                              "status",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          },
-                          function($event) {
-                            return _vm.updateStatus(book)
-                          }
-                        ]
-                      }
-                    },
-                    [
-                      _c("option", { attrs: { disabled: "", value: "" } }),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "want" } }, [
-                        _vm._v("買いたい")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "wait" } }, [
-                        _vm._v("積んでる")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "reading" } }, [
-                        _vm._v("読んでる")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "finish" } }, [
-                        _vm._v("読んだよ")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "ok" } }, [
-                        _vm._v("理解した")
+                  _c("div", { staticClass: "p-2 inline__right" }, [
+                    _c("div", { staticClass: "card-title" }, [
+                      _c("a", { attrs: { href: book.itemUrl } }, [
+                        _vm._v(_vm._s(book.title))
                       ])
-                    ]
-                  )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: book.status,
+                            expression: "book.status"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        on: {
+                          change: [
+                            function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                book,
+                                "status",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                            function($event) {
+                              return _vm.updateStatus(book)
+                            }
+                          ]
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { disabled: "", value: "" } }),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "want" } }, [
+                          _vm._v("買いたい")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "wait" } }, [
+                          _vm._v("積んでる")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "reading" } }, [
+                          _vm._v("読んでる")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "finish" } }, [
+                          _vm._v("読んだよ")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "ok" } }, [
+                          _vm._v("理解した")
+                        ])
+                      ]
+                    )
+                  ])
                 ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-danger",
-                on: {
-                  click: function($event) {
-                    return _vm.deleteMyBook(book.id)
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger",
+                  on: {
+                    click: function($event) {
+                      return _vm.deleteMyBook(book.id)
+                    }
                   }
-                }
-              },
-              [_vm._v("delete")]
-            )
+                },
+                [_vm._v("delete")]
+              )
+            ])
           ])
-        ])
-      }),
-      0
-    )
-  ])
+        }),
+        0
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38998,7 +39012,9 @@ var render = function() {
     "div",
     [
       _vm._v("\n    top page\n    "),
-      _c("router-link", { attrs: { to: "/search" } }, [_vm._v("search")])
+      _c("router-link", { attrs: { to: "/search" } }, [_vm._v("search")]),
+      _vm._v(" "),
+      _c("router-link", { attrs: { to: "/mypage" } }, [_vm._v("mypage")])
     ],
     1
   )
@@ -53935,9 +53951,12 @@ var app = new Vue({
 /*!***********************************!*\
   !*** ./resources/js/bootstrap.js ***!
   \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./resources/js/util.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -53966,13 +53985,12 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * a simple convenience so we don't have to attach every token manually.
  */
 
-var token = document.head.querySelector('meta[name="csrf-token"]');
 
-if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+window.axios.interceptors.request.use(function (config) {
+  // クッキーからトークンを取り出してヘッダーに添付する
+  config.headers['X-XSRF-TOKEN'] = Object(_util__WEBPACK_IMPORTED_MODULE_1__["getCookieValue"])('XSRF-TOKEN');
+  return config;
+});
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -54303,6 +54321,50 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: routes
 });
 /* harmony default export */ __webpack_exports__["default"] = (router);
+
+/***/ }),
+
+/***/ "./resources/js/util.js":
+/*!******************************!*\
+  !*** ./resources/js/util.js ***!
+  \******************************/
+/*! exports provided: getCookieValue */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCookieValue", function() { return getCookieValue; });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+/**
+ * クッキーの値を取得する
+ * @param {String} searchKey 検索するキー
+ * @returns {String} キーに対応する値
+ */
+function getCookieValue(searchKey) {
+  if (typeof searchKey === 'undefined') {
+    return '';
+  }
+
+  var val = '';
+  document.cookie.split(';').forEach(function (cookie) {
+    var _cookie$split = cookie.split('='),
+        _cookie$split2 = _slicedToArray(_cookie$split, 2),
+        key = _cookie$split2[0],
+        value = _cookie$split2[1];
+
+    if (key === searchKey) {
+      return val = value;
+    }
+  });
+  return val;
+}
 
 /***/ }),
 

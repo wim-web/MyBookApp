@@ -11,7 +11,8 @@
 |
 */
 
-Route::delete('/books/{book}', 'BookController@destroy');
+Route::patch('books/{book}/status', 'BookController@updateStatus');
+Route::resource('books', 'BookController');
 
 Route::get('/{any?}', function() {
     return view('index');

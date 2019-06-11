@@ -3,11 +3,7 @@
         <h2>searchするよ</h2>
         <input v-model="inputTitle" type="text" placeholder="title">
         <button class="btn btn-primary" @click="fetchBooksData()">submit</button>
-        
-        <Book v-for="book in books"
-                :key="book.title"
-                :bookData="book"
-        />
+        <Book :books="books" />
     </div>
 </template>
 

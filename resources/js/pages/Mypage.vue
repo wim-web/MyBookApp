@@ -1,18 +1,30 @@
 <template>
     <div>
         <h2>mypage</h2>
-        <div v-for="book in myBooks" :key="book.id">
-            <img :src="book.largeImageUrl">
-            <p><a :href="book.itemUrl">{{ book.title }}</a></p>
-            <select v-model="book.status" v-on:change="updateStatus(book)">
-                <option disabled value=""></option>
-                <option value="want">買いたい</option>
-                <option value="wait">積んでる</option>
-                <option value="reading">読んでる</option>
-                <option value="finish">読んだよ</option>
-                <option value="ok">理解した</option>
-            </select>
-            <button class="btn btn-danger" @click="deleteMyBook(book.id)">delete</button>
+        <div class="row">
+            <div v-for="book in myBooks" :key="book.id" class="col-12 col-lg-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="inline">
+                            <div class="p-2">
+                                <p class="img-wrap"><img :src="book.largeImageUrl"></p>
+                            </div>
+                            <div class="p-2 inline__right">
+                                <div class="card-title"><a :href="book.itemUrl">{{ book.title }}</a></div>
+                                <select v-model="book.status" v-on:change="updateStatus(book)" class="form-control">
+                                    <option disabled value=""></option>
+                                    <option value="want">買いたい</option>
+                                    <option value="wait">積んでる</option>
+                                    <option value="reading">読んでる</option>
+                                    <option value="finish">読んだよ</option>
+                                    <option value="ok">理解した</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" @click="deleteMyBook(book.id)">delete</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -54,3 +66,22 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.inline {
+    display: flex;
+    &__right {
+        width: 100%;
+    }
+}
+
+.img-wrap {
+    width: 150px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.img-wrap img {
+    width: 100%;
+}
+</style>

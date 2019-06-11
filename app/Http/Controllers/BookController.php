@@ -27,9 +27,17 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
+        //todo: return
         $bookData = $request->all();
         $this->book->fill(['user_id' => 1]);
         $this->book->fill($bookData)->save();
         return 'uuu';
+    }
+
+    public function destroy(Book $book)
+    {
+        $book->delete();
+        
+        return $this->user->find(1)->load('books');
     }
 }

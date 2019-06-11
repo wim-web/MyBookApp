@@ -1797,6 +1797,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1834,6 +1843,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return fetchMyBooks;
+    }(),
+    deleteMyBook: function () {
+      var _deleteMyBook = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(id) {
+        var deleteFlg, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                deleteFlg = confirm('delete?');
+
+                if (deleteFlg) {
+                  _context2.next = 3;
+                  break;
+                }
+
+                return _context2.abrupt("return");
+
+              case 3:
+                _context2.next = 5;
+                return axios["delete"]("/books/".concat(id))["catch"](function (err) {
+                  return err;
+                });
+
+              case 5:
+                response = _context2.sent;
+                console.log(response);
+                this.myBooks = response.data.books;
+
+              case 8:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function deleteMyBook(_x) {
+        return _deleteMyBook.apply(this, arguments);
+      }
+
+      return deleteMyBook;
     }()
   },
   created: function created() {
@@ -38065,14 +38117,48 @@ var render = function() {
             _c("a", { attrs: { href: book.itemUrl } }, [
               _vm._v(_vm._s(book.title))
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _vm._m(0, true),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-danger",
+              on: {
+                click: function($event) {
+                  return _vm.deleteMyBook(book.id)
+                }
+              }
+            },
+            [_vm._v("delete")]
+          )
         ])
       })
     ],
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("select", { attrs: { name: "", id: "" } }, [
+      _c("option", { attrs: { value: "" } }, [_vm._v("ー")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "want" } }, [_vm._v("買いたい")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "wait" } }, [_vm._v("積んでる")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "reading" } }, [_vm._v("読んでる")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "finish" } }, [_vm._v("読んだよ")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "ok" } }, [_vm._v("理解した")])
+    ])
+  }
+]
 render._withStripped = true
 
 

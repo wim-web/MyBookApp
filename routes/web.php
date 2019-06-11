@@ -11,6 +11,8 @@
 |
 */
 
+Route::delete('/books/{book}', 'BookController@destroy');
+
 Route::get('/{any?}', function() {
     return view('index');
 })->where('any', '.+');

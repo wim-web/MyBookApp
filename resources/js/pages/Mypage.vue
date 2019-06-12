@@ -1,7 +1,8 @@
 <template>
     <div>
         <h2 class="text-center mb-4">Mypage</h2>
-        <div class="row">
+        <Loading v-if="loading"/>
+        <div v-else class="row">
             <div v-for="book in myBooks" :key="book.id" class="col-12 col-md-6 col-xl-4">
                 <div class="card mb-3">
                     <div class="card-body">
@@ -30,19 +31,28 @@
 </template>
 
 <script>
+
+import Loading from '../components/Loading';
+
 export default {
     data() {
         return {
             myBooks: [],
             status: {},
+            loading: false,
         }
+    },
+    components: {
+        Loading,
     },
     methods: {
         async fetchMyBooks() {
             //todo: error handling
+            this.loading = true;
             const response = await axios.get('/books');
             console.log(response.data.books);
             this.myBooks = response.data.books;
+            this.loading = false;
         },
         async deleteMyBook(id) {
             const deleteFlg = confirm('delete?');
@@ -84,4 +94,5 @@ export default {
 .img-wrap img {
     width: 100%;
 }
+
 </style>

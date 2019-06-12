@@ -9,29 +9,38 @@
                 </div>
             </div>
         </form>
-        <Book :books="books" />
+        <Loading v-if="loading"/>
+        <Book v-else :books="books" />
     </div>
 </template>
 
 <script>
+
 import Book from '../components/Book';
+import Loading from '../components/Loading';
+
 export default {
     data () {
         return {
             inputTitle: '',
             inputAuthor: '',
             books: [],
+            loading: false,
         }
     },
     components: {
         Book,
+        Loading,
     },
     methods: {
         async fetchBooksData() {
             if (!this.inputTitle) return alert('fill into brank');
             //axiosだとcorsに引っかかるので、ここだけajax
             const params = this.setParams(this.inputTitle);
-            $.ajax(
+
+            this.loading = true;
+
+            await $.ajax(
                 params
             ).done(data => {
                 console.log(data);
@@ -40,6 +49,8 @@ export default {
                 //todo:error handling
                 console.log(data.responseJSON);
             });
+
+            this.loading = false;
         },
         setParams(inputTitle) {
             return {

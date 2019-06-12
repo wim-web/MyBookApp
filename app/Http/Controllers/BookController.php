@@ -22,7 +22,9 @@ class BookController extends Controller
     public function index()
     {
         $me = $this->user->find(1);
-        $myBooks = $me->load('books');
+        $myBooks = $me->load(['books' => function($query) {
+            $query->orderBy('id', 'desc');
+        }]);
         return $myBooks;
     }
 

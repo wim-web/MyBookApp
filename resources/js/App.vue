@@ -2,11 +2,11 @@
     <div>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <span class="navbar-brand">Navbar</span>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button v-show="toggleMenu" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul v-show="toggleMenu" class="navbar-nav">
                 <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
                     <router-link to="/mypage" class="nav-link">Mypage</router-link>
                 </li>
@@ -15,9 +15,6 @@
                 </li>
                 <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
                     <a href="" class="nav-link" @click.prevent="tryLogout()">Logout</a>
-                </li>
-                <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
-                    <router-link class="nav-link" to="/register">Register</router-link>
                 </li>
                 </ul>
             </div>
@@ -40,7 +37,12 @@ export default {
             this.$store.commit('logout');
             this.$router.push('/');
         }
-    }
+    },
+    computed: {
+        toggleMenu() {
+            return this.$store.state.toggleMenu;
+        }
+    },
 }
 </script>
 

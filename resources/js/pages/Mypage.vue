@@ -73,7 +73,10 @@ export default {
     },
     created() {
         this.fetchMyBooks();
-    }
+    },
+    beforeCreate() {
+        this.$store.commit('showMenu');
+    },
 }
 </script>
 

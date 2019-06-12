@@ -8,6 +8,7 @@ const store = new Vuex.Store({
     state: {
         isLogin: false,
         user: {},
+        toggleMenu: false,
     },
     
     getters: {
@@ -21,6 +22,12 @@ const store = new Vuex.Store({
         logout(state) {
             state.isLogin = false;
         },
+        showMenu(state) {
+            state.toggleMenu = true;
+        },
+        hiddenMenu(state) {
+            state.toggleMenu = false;
+        }
     },
     
     actions: {

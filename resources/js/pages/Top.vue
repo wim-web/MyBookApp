@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form>
+        <form class="form mt-5">
             <div class="form-group">
                 <label for="username">User Name</label>
                 <input type="text" class="form-control" id="username" placeholder="user name" v-model="loginData.name">
@@ -10,6 +10,7 @@
                 <input type="password" class="form-control" id="password" placeholder="password" v-model="loginData.password">
             </div>
             <button class="btn btn-primary" @click.prevent="tryLogin()">Login</button>
+            <router-link to="/register" class="ml-3">Register?</router-link>
         </form>
     </div>
 </template>
@@ -27,7 +28,7 @@ export default {
     computed: {
         notFillForm() {
             return !this.loginData.name || !this.loginData.password;
-        }
+        },
     },
     methods: {
         async tryLogin() {
@@ -43,5 +44,15 @@ export default {
             }
         }
     },
+    beforeCreate() {
+        this.$store.commit('hiddenMenu');
+    },
 }
 </script>
+
+<style lang="scss" scoped>
+.form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+</style>

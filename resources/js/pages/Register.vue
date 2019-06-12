@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form>
+        <form class="form mt-5">
             <div class="form-group">
                 <label for="username">User Name</label>
                 <input type="text" class="form-control" id="username" placeholder="user name" v-model="registerData.name">
@@ -10,6 +10,7 @@
                 <input type="password" class="form-control" id="password" placeholder="password" v-model="registerData.password">
             </div>
             <button class="btn btn-success" @click.prevent="tryRegister()">Register</button>
+            <router-link to="/" class="ml-3">Login?</router-link>
         </form>
     </div>
 </template>
@@ -35,6 +36,16 @@ export default {
                 alert('エラー');
             }
         }
-    }
+    },
+    beforeCreate() {
+        this.$store.commit('hiddenMenu');
+    },
 }
 </script>
+
+<style lang="scss" scoped>
+.form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+</style>

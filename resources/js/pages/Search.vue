@@ -66,5 +66,8 @@ export default {
             }
         }
     },
+    beforeCreate() {
+        this.$store.commit('showMenu');
+    },
 }
 </script>

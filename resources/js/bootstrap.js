@@ -7,11 +7,11 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
+  window.Popper = require('popper.js').default;
+  window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap');
-} catch (e) {}
+  require('bootstrap');
+} catch (e) { }
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -33,10 +33,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 import { getCookieValue } from './util'
 
 window.axios.interceptors.request.use(config => {
-    // クッキーからトークンを取り出してヘッダーに添付する
-    config.headers['X-XSRF-TOKEN'] = getCookieValue('XSRF-TOKEN')
-  
-    return config
+  // クッキーからトークンを取り出してヘッダーに添付する
+  config.headers['X-XSRF-TOKEN'] = getCookieValue('XSRF-TOKEN')
+
+  return config
 })
 
 /**

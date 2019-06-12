@@ -31,15 +31,15 @@ import router from './router';
 import App from './App.vue';
 
 const createApp = async () => {
-    await store.dispatch('checkIsLogin');
+  await store.dispatch('checkIsLogin');
 
-    new Vue({
-        el: '#app',
-        router,
-        store,
-        components: { App },
-        template: '<App />',
-    });
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    components: { App },
+    template: '<App />',
+  });
 };
 
 createApp();

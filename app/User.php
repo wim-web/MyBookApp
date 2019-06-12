@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'password',
     ];
 
     /**
@@ -25,20 +25,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+        'password',
     ];
 
     public function books()
     {
         return $this->hasMany('App\Book');
+    }
+
+    public function loadBooks()
+    {
+        return $this->load(['books' => function($query) {
+            $query->orderBy('id', 'desc');
+        }]);
     }
 }

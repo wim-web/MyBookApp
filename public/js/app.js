@@ -1752,6 +1752,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1772,15 +1781,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.loading = true;
+                this.loading = true; //todo:error handling
+
                 _context.next = 3;
-                return axios.post('/logout');
+                return axios.post("/logout")["catch"](function (err) {
+                  return err.response;
+                });
 
               case 3:
                 response = _context.sent;
-                this.$store.commit('logout');
+
+                if (response.status === 200) {
+                  this.$store.commit("logout");
+                }
+
                 this.loading = false;
-                this.$router.push('/');
+                this.$router.push("/");
 
               case 7:
               case "end":
@@ -1845,6 +1861,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     books: {
@@ -1863,14 +1883,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post("/books", bookData);
+                return axios.post("/books", bookData)["catch"](function (err) {
+                  return err.response;
+                });
 
               case 2:
                 response = _context.sent;
-                console.log(response);
-                alert('success');
 
-              case 5:
+                if (response.status === 201) {
+                  alert('success');
+                } else {
+                  alert('error');
+                }
+
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -1939,6 +1965,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1964,15 +1996,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 //todo: error handling
                 this.loading = true;
                 _context.next = 3;
-                return axios.get('/books');
+                return axios.get("/books")["catch"](function (err) {
+                  return err.response;
+                });
 
               case 3:
                 response = _context.sent;
-                console.log(response);
-                this.myBooks = response.data.books;
+
+                if (response.status === 200) {
+                  this.myBooks = response.data.books;
+                } else {
+                  alert('error');
+                }
+
                 this.loading = false;
 
-              case 7:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -1995,7 +2034,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                deleteFlg = confirm('delete?');
+                deleteFlg = confirm("delete?");
 
                 if (deleteFlg) {
                   _context2.next = 3;
@@ -2007,15 +2046,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 _context2.next = 5;
                 return axios["delete"]("/books/".concat(id))["catch"](function (err) {
-                  return err;
+                  return err.response;
                 });
 
               case 5:
                 response = _context2.sent;
-                console.log(response);
-                this.myBooks = response.data.books;
 
-              case 8:
+                if (response.status === 200) {
+                  this.myBooks = response.data.books;
+                } else {
+                  alert('error');
+                }
+
+              case 7:
               case "end":
                 return _context2.stop();
             }
@@ -2033,23 +2076,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _updateStatus = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(selectedBook) {
-        var response;
+        var statusObj, response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.next = 2;
-                return axios.patch("/books/".concat(selectedBook.id, "/status"), {
-                  'status': selectedBook.status
-                })["catch"](function (err) {
+                //todo:error handling
+                statusObj = {
+                  status: selectedBook.status
+                };
+                _context3.next = 3;
+                return axios.patch("/books/".concat(selectedBook.id, "/status"), statusObj)["catch"](function (err) {
                   return err;
                 });
 
-              case 2:
+              case 3:
                 response = _context3.sent;
-                console.log(response);
 
-              case 4:
+                if (!(response.status !== 200)) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                return _context3.abrupt("return", alert('error'));
+
+              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -2068,7 +2119,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.fetchMyBooks();
   },
   beforeCreate: function beforeCreate() {
-    this.$store.commit('showMenu');
+    this.$store.commit("showMenu");
   }
 });
 
@@ -2110,24 +2161,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       registerData: {
-        name: '',
-        password: ''
+        name: "",
+        password: ""
       },
       loading: false
     };
   },
   components: {
     Loading: _components_Loading__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  computed: {
-    notFillForm: function notFillForm() {
-      return !this.registerData.name || !this.registerData.password;
-    }
   },
   methods: {
     tryRegister: function () {
@@ -2139,34 +2199,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!this.notFillForm) {
-                  _context.next = 2;
-                  break;
-                }
+                this.loading = true; //todo:error handling
 
-                return _context.abrupt("return", alert('両方埋めて'));
-
-              case 2:
-                this.loading = true;
-                _context.next = 5;
-                return axios.post('/register', this.registerData)["catch"](function (err) {
+                _context.next = 3;
+                return axios.post("/register", this.registerData)["catch"](function (err) {
                   return err.response;
                 });
 
-              case 5:
+              case 3:
                 response = _context.sent;
-                console.log(response);
 
                 if (response.status === 201) {
-                  this.$store.commit('login');
-                  this.$router.push('/mypage');
+                  this.$store.commit("login");
+                  this.$router.push("/mypage");
                 } else {
-                  alert('エラー');
+                  alert("エラー");
                 }
 
                 this.loading = false;
 
-              case 9:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2182,7 +2234,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }()
   },
   beforeCreate: function beforeCreate() {
-    this.$store.commit('hiddenMenu');
+    this.$store.commit("hiddenMenu");
   }
 });
 
@@ -2197,16 +2249,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_Book__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Book */ "./resources/js/components/Book.vue");
-/* harmony import */ var _components_Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Loading */ "./resources/js/components/Loading.vue");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+/* harmony import */ var _components_Book__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Book */ "./resources/js/components/Book.vue");
+/* harmony import */ var _components_Loading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Loading */ "./resources/js/components/Loading.vue");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2228,81 +2279,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      inputTitle: '',
-      inputAuthor: '',
+      inputTitle: "",
+      inputAuthor: "",
       books: [],
+      searchResultCount: -1,
       loading: false
     };
   },
   components: {
-    Book: _components_Book__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Loading: _components_Loading__WEBPACK_IMPORTED_MODULE_2__["default"]
+    Book: _components_Book__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Loading: _components_Loading__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  computed: {
+    showSearchResultCount: function showSearchResultCount() {
+      return this.searchResultCount >= 0;
+    }
   },
   methods: {
-    fetchBooksData: function () {
-      var _fetchBooksData = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var _this = this;
+    fetchBooksData: function fetchBooksData() {
+      var _this = this;
 
-        var params;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (this.inputTitle) {
-                  _context.next = 2;
-                  break;
-                }
+      var params = this.setParams(this.inputTitle);
+      this.loading = true; //axiosだとcorsに引っかかるので、ここだけajax
 
-                return _context.abrupt("return", alert('fill into brank'));
-
-              case 2:
-                //axiosだとcorsに引っかかるので、ここだけajax
-                params = this.setParams(this.inputTitle);
-                this.loading = true;
-                _context.next = 6;
-                return $.ajax(params).done(function (data) {
-                  console.log(data);
-                  _this.books = data.Items;
-                }).fail(function (data) {
-                  //todo:error handling
-                  console.log(data.responseJSON);
-                });
-
-              case 6:
-                this.loading = false;
-
-              case 7:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function fetchBooksData() {
-        return _fetchBooksData.apply(this, arguments);
-      }
-
-      return fetchBooksData;
-    }(),
+      $.ajax(params).done(function (data) {
+        _this.books = data.Items;
+        _this.searchResultCount = data.count;
+      }).fail(function (data) {
+        //todo:error handling
+        alert('error');
+      }).always(function () {
+        _this.loading = false;
+      });
+    },
     setParams: function setParams(inputTitle) {
       return {
-        url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404',
-        type: 'GET',
-        datatype: 'json',
+        url: "https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404",
+        type: "GET",
+        datatype: "json",
         data: {
-          applicationId: '1019399324990976605',
+          applicationId: "1019399324990976605",
           keyword: inputTitle,
           formatVersion: 2,
-          elements: 'count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl'
+          elements: "count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl"
         }
       };
     }
   },
   beforeCreate: function beforeCreate() {
-    this.$store.commit('showMenu');
+    this.$store.commit("showMenu");
   }
 });
 
@@ -2344,24 +2369,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       loginData: {
-        name: '',
-        password: ''
+        name: "",
+        password: ""
       },
       loading: false
     };
   },
   components: {
     Loading: _components_Loading__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  computed: {
-    notFillForm: function notFillForm() {
-      return !this.loginData.name || !this.loginData.password;
-    }
   },
   methods: {
     tryLogin: function () {
@@ -2373,35 +2407,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!this.notFillForm) {
-                  _context.next = 2;
-                  break;
-                }
-
-                return _context.abrupt("return", alert('両方埋めて'));
-
-              case 2:
                 this.loading = true; // todo:error handling
 
-                _context.next = 5;
-                return axios.post('/login', this.loginData)["catch"](function (err) {
+                _context.next = 3;
+                return axios.post("/login", this.loginData)["catch"](function (err) {
                   return err.response;
                 });
 
-              case 5:
+              case 3:
                 response = _context.sent;
-                console.log(response);
 
                 if (response.status === 200) {
-                  this.$store.commit('login');
-                  this.$router.push('/mypage');
+                  this.$store.commit("login");
+                  this.$router.push("/mypage");
                 } else {
-                  alert('エラー');
+                  alert("エラー");
                 }
 
                 this.loading = false;
 
-              case 9:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2417,7 +2442,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }()
   },
   beforeCreate: function beforeCreate() {
-    this.$store.commit('hiddenMenu');
+    this.$store.commit("hiddenMenu");
   }
 });
 
@@ -39589,7 +39614,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("mybookに追加")]
+              [_vm._v("\n        mybookに追加\n      ")]
             )
           ])
         ]
@@ -39753,7 +39778,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("delete")]
+                      [_vm._v("\n          delete\n        ")]
                     )
                   ])
                 ]
@@ -39794,7 +39819,15 @@ var render = function() {
         ? _c("Loading")
         : _c(
             "form",
-            { staticClass: "form mt-5" },
+            {
+              staticClass: "form mt-5",
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.tryRegister()
+                }
+              }
+            },
             [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", { attrs: { for: "username" } }, [
@@ -39814,7 +39847,8 @@ var render = function() {
                   attrs: {
                     type: "text",
                     id: "username",
-                    placeholder: "user name"
+                    placeholder: "user name",
+                    required: ""
                   },
                   domProps: { value: _vm.registerData.name },
                   on: {
@@ -39846,7 +39880,8 @@ var render = function() {
                   attrs: {
                     type: "password",
                     id: "password",
-                    placeholder: "password"
+                    placeholder: "password",
+                    required: ""
                   },
                   domProps: { value: _vm.registerData.password },
                   on: {
@@ -39866,15 +39901,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "button",
-                {
-                  staticClass: "btn btn-success",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.tryRegister()
-                    }
-                  }
-                },
+                { staticClass: "btn btn-success", attrs: { type: "submit" } },
                 [_vm._v("Register")]
               ),
               _vm._v(" "),
@@ -39915,54 +39942,83 @@ var render = function() {
     [
       _c("h2", { staticClass: "text-center mb-4" }, [_vm._v("Add Book")]),
       _vm._v(" "),
-      _c("form", [
-        _c("div", { staticClass: "input-group mb-3 form" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.inputTitle,
-                expression: "inputTitle"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text", placeholder: "タイトルで検索" },
-            domProps: { value: _vm.inputTitle },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.inputTitle = $event.target.value
-              }
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.fetchBooksData()
             }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "input-group-append" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-outline-secondary",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.fetchBooksData()
-                  }
+          }
+        },
+        [
+          _c("div", { staticClass: "input-group mb-3 form" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.inputTitle,
+                  expression: "inputTitle"
                 }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                placeholder: "タイトルで検索",
+                required: ""
               },
-              [_vm._v("search")]
-            )
+              domProps: { value: _vm.inputTitle },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.inputTitle = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm._m(0)
           ])
-        ])
-      ]),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "p",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.showSearchResultCount,
+              expression: "showSearchResultCount"
+            }
+          ]
+        },
+        [_vm._v("検索結果:" + _vm._s(_vm.searchResultCount))]
+      ),
       _vm._v(" "),
       _vm.loading ? _c("Loading") : _c("Book", { attrs: { books: _vm.books } })
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-outline-secondary", attrs: { type: "submit" } },
+        [_vm._v("\n          search\n        ")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -39991,7 +40047,15 @@ var render = function() {
         ? _c("Loading")
         : _c(
             "form",
-            { staticClass: "form mt-5" },
+            {
+              staticClass: "form mt-5",
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.tryLogin()
+                }
+              }
+            },
             [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", { attrs: { for: "username" } }, [
@@ -40011,7 +40075,8 @@ var render = function() {
                   attrs: {
                     type: "text",
                     id: "username",
-                    placeholder: "user name"
+                    placeholder: "user name",
+                    required: ""
                   },
                   domProps: { value: _vm.loginData.name },
                   on: {
@@ -40043,7 +40108,8 @@ var render = function() {
                   attrs: {
                     type: "password",
                     id: "password",
-                    placeholder: "password"
+                    placeholder: "password",
+                    required: ""
                   },
                   domProps: { value: _vm.loginData.password },
                   on: {
@@ -40059,15 +40125,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.tryLogin()
-                    }
-                  }
-                },
+                { staticClass: "btn btn-primary", attrs: { type: "submit" } },
                 [_vm._v("Login")]
               ),
               _vm._v(" "),
@@ -56712,43 +56770,44 @@ var routes = [{
   path: '/',
   component: _pages_Top__WEBPACK_IMPORTED_MODULE_3__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.isLogin) {
-      next('/mypage');
-    } else {
-      next();
-    }
+    redirectMypageOrNext(next);
   }
 }, {
   path: '/mypage',
   component: _pages_Mypage__WEBPACK_IMPORTED_MODULE_4__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.isLogin) {
-      next();
-    } else {
-      next('/');
-    }
+    redirectTopOrNext(next);
   }
 }, {
   path: '/search',
   component: _pages_Search__WEBPACK_IMPORTED_MODULE_5__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.isLogin) {
-      next();
-    } else {
-      next('/');
-    }
+    redirectTopOrNext(next);
   }
 }, {
   path: '/register',
   component: _pages_Register__WEBPACK_IMPORTED_MODULE_6__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.isLogin) {
-      next('/mypage');
-    } else {
-      next();
-    }
+    redirectMypageOrNext(next);
   }
 }];
+
+function redirectTopOrNext(next) {
+  if (_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.isLogin) {
+    next();
+  } else {
+    next('/');
+  }
+}
+
+function redirectMypageOrNext(next) {
+  if (_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.isLogin) {
+    next('/mypage');
+  } else {
+    next();
+  }
+}
+
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
   routes: routes
@@ -56833,7 +56892,6 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
     user: {},
     toggleMenu: false
   },
-  getters: {},
   mutations: {
     login: function login(state) {
       state.isLogin = true;
@@ -56853,25 +56911,37 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
       var _checkIsLogin = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
-        var commit, response;
+        var commit, response, userInfo;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 commit = _ref.commit;
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/user');
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/user')["catch"](function (err) {
+                  return err.response;
+                });
 
               case 3:
                 response = _context.sent;
 
-                if (response.data) {
+                if (!(response.status !== 200)) {
+                  _context.next = 6;
+                  break;
+                }
+
+                return _context.abrupt("return", alert('error'));
+
+              case 6:
+                userInfo = response.data;
+
+                if (userInfo) {
                   commit('login');
                 } else {
                   commit('logout');
                 }
 
-              case 5:
+              case 8:
               case "end":
                 return _context.stop();
             }

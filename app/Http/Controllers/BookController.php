@@ -14,7 +14,6 @@ class BookController extends Controller
 
     public function __construct(Book $book, User $user)
     {
-        // $this->middleware('auth');
         $this->book = $book;
         $this->user = $user;
     }
@@ -22,43 +21,41 @@ class BookController extends Controller
 
     public function index()
     {
-        $me = $this->user->find($this->getUserId());
-        $myBooks = $me->load(['books' => function($query) {
-            $query->orderBy('id', 'desc');
-        }]);
-        return $myBooks;
+        return $this->userWithBooks();
     }
 
     public function store(Request $request)
     {
-        //todo: return
         $bookData = $request->all();
-        $this->book->fill(['user_id' => $this->getUserId()]);
+        $bookData['user_id'] = $this->getLoginUserId();
         $this->book->fill($bookData)->save();
-        return 'uuu';
+
+        return response('success', 201);
     }
 
     public function destroy(Book $book)
     {
         $book->delete();
-        
-        return $this->user->find($this->getUserId())->load(['books' => function($query) {
-            $query->orderBy('id', 'desc');
-        }]);
+
+        return $this->userWithBooks();
     }
 
     public function updateStatus(Request $request, Book $book)
     {
         $status = $request->all();
         $book->fill($status)->save();
-
-        return $this->user->find($this->getUserId())->load(['books' => function($query) {
-            $query->orderBy('id', 'desc');
-        }]);
+        
+        return $this->userWithBooks();
     }
 
-    public function getUserId()
+    public function getLoginUserId()
     {
         return Auth::id();
+    }
+
+    public function userWithBooks()
+    {
+        $loginUser = $this->user->find($this->getLoginUserId());
+        return $loginUser->loadBooks();
     }
 }

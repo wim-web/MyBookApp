@@ -11,55 +11,55 @@ import Register from './pages/Register';
 Vue.use(VueRouter);
 
 const routes = [
-    {
-        path: '/',
-        component: Top,
-        beforeEnter: (to, from, next) => {
-            if (store.state.isLogin) {
-                next('/mypage');
-            } else {
-                next();
-            }
-        }
-    },
-    {
-        path: '/mypage',
-        component: Mypage,
-        beforeEnter: (to, from, next) => {
-            if (store.state.isLogin) {
-                next();
-            } else {
-                next('/');
-            }
-        }
-    },
-    {
-        path: '/search',
-        component: Search,
-        beforeEnter: (to, from, next) => {
-            if (store.state.isLogin) {
-                next();
-            } else {
-                next('/');
-            }
-        },
-    },
-    {
-        path: '/register',
-        component: Register,
-        beforeEnter: (to, from, next) => {
-            if (store.state.isLogin) {
-                next('/mypage');
-            } else {
-                next();
-            }
-        }
+  {
+    path: '/',
+    component: Top,
+    beforeEnter: (to, from, next) => {
+      redirectMypageOrNext(next);
     }
+  },
+  {
+    path: '/mypage',
+    component: Mypage,
+    beforeEnter: (to, from, next) => {
+      redirectTopOrNext(next);
+    }
+  },
+  {
+    path: '/search',
+    component: Search,
+    beforeEnter: (to, from, next) => {
+      redirectTopOrNext(next);
+    },
+  },
+  {
+    path: '/register',
+    component: Register,
+    beforeEnter: (to, from, next) => {
+      redirectMypageOrNext(next);
+    }
+  }
 ];
 
+function redirectTopOrNext(next) {
+  if (store.state.isLogin) {
+    next();
+  } else {
+    next('/');
+  }
+}
+
+function redirectMypageOrNext(next) {
+  if (store.state.isLogin) {
+    next('/mypage');
+  } else {
+    next();
+  }
+}
+
 const router = new VueRouter({
-    mode: 'history',
-    routes,
+  mode: 'history',
+  routes,
 });
 
 export default router;

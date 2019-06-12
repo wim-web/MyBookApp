@@ -1968,7 +1968,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 response = _context.sent;
-                console.log(response.data.books);
+                console.log(response);
                 this.myBooks = response.data.books;
                 this.loading = false;
 

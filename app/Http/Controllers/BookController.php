@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Book;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -21,7 +22,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $me = $this->user->find(1);
+        $me = $this->user->find($this->getUserId());
         $myBooks = $me->load(['books' => function($query) {
             $query->orderBy('id', 'desc');
         }]);
@@ -32,7 +33,7 @@ class BookController extends Controller
     {
         //todo: return
         $bookData = $request->all();
-        $this->book->fill(['user_id' => 1]);
+        $this->book->fill(['user_id' => $this->getUserId()]);
         $this->book->fill($bookData)->save();
         return 'uuu';
     }
@@ -41,7 +42,7 @@ class BookController extends Controller
     {
         $book->delete();
         
-        return $this->user->find(1)->load(['books' => function($query) {
+        return $this->user->find($this->getUserId())->load(['books' => function($query) {
             $query->orderBy('id', 'desc');
         }]);
     }
@@ -51,8 +52,13 @@ class BookController extends Controller
         $status = $request->all();
         $book->fill($status)->save();
 
-        return $this->user->find(1)->load(['books' => function($query) {
+        return $this->user->find($this->getUserId())->load(['books' => function($query) {
             $query->orderBy('id', 'desc');
         }]);
+    }
+
+    public function getUserId()
+    {
+        return Auth::id();
     }
 }

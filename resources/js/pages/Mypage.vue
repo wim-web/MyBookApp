@@ -50,7 +50,7 @@ export default {
             //todo: error handling
             this.loading = true;
             const response = await axios.get('/books');
-            console.log(response.data.books);
+            console.log(response);
             this.myBooks = response.data.books;
             this.loading = false;
         },

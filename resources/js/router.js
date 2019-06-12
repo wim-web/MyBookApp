@@ -6,6 +6,7 @@ import store from './vuex/store';
 import Top from './pages/Top';
 import Mypage from './pages/Mypage';
 import Search from './pages/Search';
+import Register from './pages/Register';
 
 Vue.use(VueRouter);
 
@@ -42,6 +43,17 @@ const routes = [
                 next('/');
             }
         },
+    },
+    {
+        path: '/register',
+        component: Register,
+        beforeEnter: (to, from, next) => {
+            if (store.state.isLogin) {
+                next('/mypage');
+            } else {
+                next();
+            }
+        }
     }
 ];
 

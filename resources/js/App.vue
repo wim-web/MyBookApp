@@ -14,7 +14,10 @@
                     <router-link to="/search" class="nav-link">Add</router-link>
                 </li>
                 <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
-                    <a href="" class="nav-link" @click.prevent="tryLogout()">logout</a>
+                    <a href="" class="nav-link" @click.prevent="tryLogout()">Logout</a>
+                </li>
+                <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
+                    <router-link class="nav-link" to="/register">Register</router-link>
                 </li>
                 </ul>
             </div>

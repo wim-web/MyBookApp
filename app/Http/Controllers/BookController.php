@@ -41,7 +41,9 @@ class BookController extends Controller
     {
         $book->delete();
         
-        return $this->user->find(1)->load('books');
+        return $this->user->find(1)->load(['books' => function($query) {
+            $query->orderBy('id', 'desc');
+        }]);
     }
 
     public function updateStatus(Request $request, Book $book)
@@ -49,6 +51,8 @@ class BookController extends Controller
         $status = $request->all();
         $book->fill($status)->save();
 
-        return $this->user->find(1)->load('books');
+        return $this->user->find(1)->load(['books' => function($query) {
+            $query->orderBy('id', 'desc');
+        }]);
     }
 }

@@ -11,7 +11,6 @@
             </div>
             <button class="btn btn-primary" @click.prevent="tryLogin()">Login</button>
         </form>
-        {{loginData}}
     </div>
 </template>
 
@@ -36,8 +35,13 @@ export default {
             // todo:error handling
             const response = await axios.post('/login', this.loginData).catch(err => err.response);
             console.log(response);
-            this.$router.push('/mypage');
+            if (response.status === 200) {
+                this.$store.commit('login');
+                this.$router.push('/mypage');
+            } else {
+                alert('エラー');
+            }
         }
-    }
+    },
 }
 </script>

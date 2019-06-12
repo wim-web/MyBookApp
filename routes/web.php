@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('/user', function(){
+    return Auth::user();
+});
 Route::patch('books/{book}/status', 'BookController@updateStatus');
 Route::resource('books', 'BookController');
 Auth::routes();

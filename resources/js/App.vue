@@ -34,6 +34,7 @@ export default {
     methods: {
         async tryLogout() {
             const response = await axios.post('/logout');
+            this.$store.commit('logout');
             this.$router.push('/');
         }
     }

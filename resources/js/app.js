@@ -26,12 +26,20 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import store from './vuex/store';
 import router from './router';
 import App from './App.vue';
 
-const app = new Vue({
-    el: '#app',
-    router,
-    components: { App },
-    template: '<App />',
-});
+const createApp = async () => {
+    await store.dispatch('checkIsLogin');
+
+    new Vue({
+        el: '#app',
+        router,
+        store,
+        components: { App },
+        template: '<App />',
+    });
+};
+
+createApp();

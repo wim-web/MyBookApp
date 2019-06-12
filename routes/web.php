@@ -13,7 +13,9 @@
 
 Route::patch('books/{book}/status', 'BookController@updateStatus');
 Route::resource('books', 'BookController');
+Auth::routes();
 
 Route::get('/{any?}', function() {
     return view('index');
 })->where('any', '.+');
+

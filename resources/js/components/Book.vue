@@ -23,10 +23,6 @@
 <script>
 export default {
     props: {
-        // bookData: {
-        //     type: Object,
-        //     required: true,
-        // }
         books: {
             type: Array,
             required: true,

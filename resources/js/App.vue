@@ -14,7 +14,7 @@
                     <router-link to="/search" class="nav-link">Add</router-link>
                 </li>
                 <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
-                    <router-link to="/" class="nav-link">logout</router-link>
+                    <a href="" class="nav-link" @click.prevent="tryLogout()">logout</a>
                 </li>
                 </ul>
             </div>
@@ -28,6 +28,17 @@
         </main>
     </div>
 </template>
+
+<script>
+export default {
+    methods: {
+        async tryLogout() {
+            const response = await axios.post('/logout');
+            this.$router.push('/');
+        }
+    }
+}
+</script>
 
 <style lang="scss" scoped>
 .router-enter,

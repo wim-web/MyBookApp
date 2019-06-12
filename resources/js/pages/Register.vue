@@ -1,6 +1,7 @@
 <template>
     <div>
-        <form class="form mt-5">
+        <Loading v-if="loading"/>
+        <form v-else class="form mt-5">
             <div class="form-group">
                 <label for="username">User Name</label>
                 <input type="text" class="form-control" id="username" placeholder="user name" v-model="registerData.name">
@@ -16,17 +17,29 @@
 </template>
 
 <script>
+import Loading from '../components/Loading';
 export default {
     data() {
         return {
             registerData: {
                 name: '',
                 password: '',
-            }
+            },
+            loading: false,
         }
+    },
+    components: {
+        Loading,
+    },
+    computed: {
+        notFillForm() {
+            return !this.registerData.name || !this.registerData.password;
+        },
     },
     methods: {
         async tryRegister() {
+            if (this.notFillForm) return alert('両方埋めて');
+            this.loading = true;
             const response = await axios.post('/register', this.registerData).catch(err => err.response);
             console.log(response);
             if (response.status === 201) {
@@ -35,6 +48,8 @@ export default {
             } else {
                 alert('エラー');
             }
+
+            this.loading = false;
         }
     },
     beforeCreate() {

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <form class="form mt-5">
+        <Loading v-if="loading"/>
+        <form v-else class="form mt-5">
             <div class="form-group">
                 <label for="username">User Name</label>
                 <input type="text" class="form-control" id="username" placeholder="user name" v-model="loginData.name">
@@ -16,14 +17,19 @@
 </template>
 
 <script>
+import Loading from '../components/Loading';
 export default {
     data() {
         return {
             loginData: {
                 name: '',
                 password: '',
-            }
+            },
+            loading: false,
         }
+    },
+    components: {
+        Loading,
     },
     computed: {
         notFillForm() {
@@ -33,6 +39,7 @@ export default {
     methods: {
         async tryLogin() {
             if (this.notFillForm) return alert('両方埋めて');
+            this.loading = true;
             // todo:error handling
             const response = await axios.post('/login', this.loginData).catch(err => err.response);
             console.log(response);
@@ -42,6 +49,7 @@ export default {
             } else {
                 alert('エラー');
             }
+            this.loading = false;
         }
     },
     beforeCreate() {

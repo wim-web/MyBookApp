@@ -2,7 +2,7 @@
     <div>
         <h2 class="text-center mb-4">Add Book</h2>
         <form>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 form">
                 <input v-model="inputTitle" class="form-control" type="text" placeholder="タイトルで検索">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" @click.prevent="fetchBooksData()">search</button>
@@ -71,3 +71,11 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+</style>
+

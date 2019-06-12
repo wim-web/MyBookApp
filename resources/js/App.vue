@@ -20,7 +20,10 @@
             </div>
         </nav>
         <main>
-            <div class="container pt-70px">
+            <div v-if="loading" class="pt-70px">
+                <Loading/>
+            </div>
+            <div v-else class="container pt-70px">
                 <transition name="router" mode="out-in">
                     <router-view></router-view>
                 </transition>
@@ -30,12 +33,24 @@
 </template>
 
 <script>
+import Loading from './components/Loading';
 export default {
+    data() {
+        return {
+            loading: false,
+        }
+    },
+    components: {
+        Loading,
+    },
     methods: {
         async tryLogout() {
+            this.loading = true;
             const response = await axios.post('/logout');
             this.$store.commit('logout');
+            this.loading = false;
             this.$router.push('/');
+
         }
     },
     computed: {

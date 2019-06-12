@@ -14,9 +14,13 @@
 Route::get('/user', function(){
     return Auth::user();
 });
+
 Route::patch('books/{book}/status', 'BookController@updateStatus');
-Route::resource('books', 'BookController');
-Auth::routes();
+Route::resource('books', 'BookController')->only(['index', 'store', 'destroy']);
+
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/logout', 'Auth\LoginController@logout');
+Route::post('/register', 'Auth\RegisterController@register');
 
 Route::get('/{any?}', function() {
     return view('index');

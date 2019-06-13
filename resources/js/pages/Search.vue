@@ -21,7 +21,6 @@
       <Book :books="books"/>
       <paginate 
         :pageCount="pageCount"
-        :initial-page="3"
         :containerClass="'pagination'"
         :page-class="'page-item'"
         :page-link-class="'page-link'"
@@ -29,7 +28,7 @@
         :prev-link-class="'page-link'"
         :next-class="'page-item'"
         :next-link-class="'page-link'"
-        :clickHandler="functionName">
+        :clickHandler="fetchBooksDataByPage">
       </paginate>
     </div>
   </div>
@@ -69,7 +68,6 @@ export default {
       //axiosだとcorsに引っかかるので、ここだけajax
       $.ajax(params)
         .done(data => {
-          console.log(data)
           if (data.Items) this.books = data.Items;
           this.searchResultCount = data.count;
           this.pageCount = data.pageCount;
@@ -98,7 +96,7 @@ export default {
         }
       };
     },
-    functionName(page) {
+    fetchBooksDataByPage(page) {
       this.fetchBooksData(page);
     }
   },

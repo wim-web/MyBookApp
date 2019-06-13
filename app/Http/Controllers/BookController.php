@@ -21,7 +21,9 @@ class BookController extends Controller
 
     public function index()
     {
-        return $this->userWithBooks();
+        $loginUsersBooks = $this->fetchLoginUsersBooks();
+
+        return $loginUsersBooks;
     }
 
     public function store(Request $request)
@@ -36,16 +38,19 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
+        // $loginUsersBooks = $this->fetchLoginUsersBooks();
 
-        return $this->userWithBooks();
+        // return $loginUsersBooks;
+        return response('success', 200);
     }
 
     public function updateStatus(Request $request, Book $book)
     {
         $status = $request->all();
         $book->fill($status)->save();
-        
-        return $this->userWithBooks();
+        $loginUsersBooks = $this->fetchLoginUsersBooks();
+
+        return $loginUsersBooks;
     }
 
     public function getLoginUserId()
@@ -53,9 +58,10 @@ class BookController extends Controller
         return Auth::id();
     }
 
-    public function userWithBooks()
+    public function fetchLoginUsersBooks()
     {
         $loginUser = $this->user->find($this->getLoginUserId());
-        return $loginUser->loadBooks();
+
+        return $loginUser->books()->paginate(12);
     }
 }

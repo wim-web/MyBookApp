@@ -1971,12 +1971,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       myBooks: [],
       status: {},
+      pageCount: 0,
+      page: 1,
       loading: false
     };
   },
@@ -1996,7 +2011,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 //todo: error handling
                 this.loading = true;
                 _context.next = 3;
-                return axios.get("/books")["catch"](function (err) {
+                return axios.get("/books?page=".concat(this.page))["catch"](function (err) {
                   return err.response;
                 });
 
@@ -2004,7 +2019,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context.sent;
 
                 if (response.status === 200) {
-                  this.myBooks = response.data.books;
+                  this.myBooks = response.data.data;
+                  this.pageCount = response.data.last_page;
                 } else {
                   alert('error');
                 }
@@ -2053,7 +2069,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context2.sent;
 
                 if (response.status === 200) {
-                  this.myBooks = response.data.books;
+                  this.fetchMyBooks(this.page);
                 } else {
                   alert('error');
                 }
@@ -2113,7 +2129,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return updateStatus;
-    }()
+    }(),
+    fetchMybooksByPage: function fetchMybooksByPage(page) {
+      this.page = page;
+      this.fetchMyBooks();
+    }
   },
   created: function created() {
     this.fetchMyBooks();
@@ -2287,7 +2307,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2320,7 +2339,6 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true; //axiosだとcorsに引っかかるので、ここだけajax
 
       $.ajax(params).done(function (data) {
-        console.log(data);
         if (data.Items) _this.books = data.Items;
         _this.searchResultCount = data.count;
         _this.pageCount = data.pageCount;
@@ -2346,7 +2364,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
     },
-    functionName: function functionName(page) {
+    fetchBooksDataByPage: function fetchBooksDataByPage(page) {
       this.fetchBooksData(page);
     }
   },
@@ -6986,7 +7004,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".inline[data-v-30d910f8] {\n  display: flex;\n}\n.inline__right[data-v-30d910f8] {\n  width: 100%;\n}\n.img-wrap[data-v-30d910f8] {\n  width: 150px;\n  height: 200px;\n  overflow: hidden;\n}\n.img-wrap img[data-v-30d910f8] {\n  width: 100%;\n}", ""]);
+exports.push([module.i, ".inline[data-v-30d910f8] {\n  display: flex;\n}\n.inline__right[data-v-30d910f8] {\n  width: 100%;\n}\n.img-wrap[data-v-30d910f8] {\n  width: 150px;\n  height: 200px;\n  overflow: hidden;\n}\n.img-wrap img[data-v-30d910f8] {\n  width: 100%;\n}\n.pagination[data-v-30d910f8] {\n  justify-content: center;\n}", ""]);
 
 // exports
 
@@ -39698,9 +39716,31 @@ var render = function() {
     [
       _c("h2", { staticClass: "text-center mb-4" }, [_vm._v("Mypage")]),
       _vm._v(" "),
-      _vm.loading
-        ? _c("Loading")
-        : _c(
+      _c("Loading", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.loading,
+            expression: "loading"
+          }
+        ]
+      }),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.loading,
+              expression: "!loading"
+            }
+          ]
+        },
+        [
+          _c(
             "div",
             { staticClass: "row" },
             _vm._l(_vm.myBooks, function(book) {
@@ -39802,14 +39842,31 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("\n          delete\n        ")]
+                      [_vm._v("\n            delete\n          ")]
                     )
                   ])
                 ]
               )
             }),
             0
-          )
+          ),
+          _vm._v(" "),
+          _c("paginate", {
+            attrs: {
+              pageCount: _vm.pageCount,
+              containerClass: "pagination",
+              "page-class": "page-item",
+              "page-link-class": "page-link",
+              "prev-class": "page-item",
+              "prev-link-class": "page-link",
+              "next-class": "page-item",
+              "next-link-class": "page-link",
+              clickHandler: _vm.fetchMybooksByPage
+            }
+          })
+        ],
+        1
+      )
     ],
     1
   )
@@ -40053,7 +40110,6 @@ var render = function() {
           _c("paginate", {
             attrs: {
               pageCount: _vm.pageCount,
-              "initial-page": 3,
               containerClass: "pagination",
               "page-class": "page-item",
               "page-link-class": "page-link",
@@ -40061,7 +40117,7 @@ var render = function() {
               "prev-link-class": "page-link",
               "next-class": "page-item",
               "next-link-class": "page-link",
-              clickHandler: _vm.functionName
+              clickHandler: _vm.fetchBooksDataByPage
             }
           })
         ],

@@ -30,13 +30,7 @@ class User extends Authenticatable
 
     public function books()
     {
-        return $this->hasMany('App\Book');
+        return $this->hasMany('App\Book')->orderBy('id', 'desc');
     }
 
-    public function loadBooks()
-    {
-        return $this->load(['books' => function($query) {
-            $query->orderBy('id', 'desc');
-        }]);
-    }
 }

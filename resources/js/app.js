@@ -28,10 +28,13 @@ window.Vue = require('vue');
 
 import store from './vuex/store';
 import router from './router';
+import Paginate from 'vuejs-paginate';
 import App from './App.vue';
 
 const createApp = async () => {
   await store.dispatch('checkIsLogin');
+
+  Vue.component('paginate', Paginate);
 
   new Vue({
     el: '#app',

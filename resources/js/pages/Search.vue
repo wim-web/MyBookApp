@@ -16,8 +16,22 @@
       </div>
     </form>
     <p v-show="showSearchResultCount">検索結果:{{ searchResultCount }}</p>
-    <Loading v-if="loading"/>
-    <Book v-else :books="books"/>
+    <Loading v-show="loading"/>
+    <div v-show="searchResultCount > 0 && !loading">
+      <Book :books="books"/>
+      <paginate 
+        :pageCount="pageCount"
+        :initial-page="3"
+        :containerClass="'pagination'"
+        :page-class="'page-item'"
+        :page-link-class="'page-link'"
+        :prev-class="'page-item'"
+        :prev-link-class="'page-link'"
+        :next-class="'page-item'"
+        :next-link-class="'page-link'"
+        :clickHandler="functionName">
+      </paginate>
+    </div>
   </div>
 </template>
 
@@ -32,6 +46,8 @@ export default {
       inputAuthor: "",
       books: [],
       searchResultCount: -1,
+      page: '',
+      pageCount: 0,
       loading: false
     };
   },
@@ -45,16 +61,18 @@ export default {
     }
   },
   methods: {
-    fetchBooksData() {
+    fetchBooksData(page = 1) {
       
-      const params = this.setParams(this.inputTitle);
+      const params = this.setParams(this.inputTitle, page);
 
       this.loading = true;
       //axiosだとcorsに引っかかるので、ここだけajax
       $.ajax(params)
         .done(data => {
-          this.books = data.Items;
+          console.log(data)
+          if (data.Items) this.books = data.Items;
           this.searchResultCount = data.count;
+          this.pageCount = data.pageCount;
         })
         .fail(data => {
           //todo:error handling
@@ -64,7 +82,7 @@ export default {
           this.loading = false;
         });
     },
-    setParams(inputTitle) {
+    setParams(inputTitle, page) {
       return {
         url: "https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404",
         type: "GET",
@@ -72,11 +90,16 @@ export default {
         data: {
           applicationId: "1019399324990976605",
           keyword: inputTitle,
+          page: page,
+          hits: 12,
           formatVersion: 2,
           elements:
             "count,page,hits,pageCount,title,author,itemCaption,itemUrl,largeImageUrl"
         }
       };
+    },
+    functionName(page) {
+      this.fetchBooksData(page);
     }
   },
   beforeCreate() {
@@ -90,5 +113,10 @@ export default {
   max-width: 500px;
   margin: 0 auto;
 }
+
+.pagination {
+  justify-content: center;
+}
 </style>
+
 

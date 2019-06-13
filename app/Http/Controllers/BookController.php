@@ -38,9 +38,7 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
-        // $loginUsersBooks = $this->fetchLoginUsersBooks();
 
-        // return $loginUsersBooks;
         return response('success', 200);
     }
 
@@ -52,6 +50,14 @@ class BookController extends Controller
 
         return $loginUsersBooks;
     }
+
+    public function showPublicPage(String $name)
+    {
+        $user = $this->user->where('name', $name)->first();
+        return  $user->books()->paginate(12);
+    }
+
+    // method
 
     public function getLoginUserId()
     {

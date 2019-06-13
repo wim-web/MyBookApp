@@ -15,6 +15,8 @@ Route::get('/user', function(){
     return Auth::user();
 });
 
+Route::get('public/{name}/show', 'BookController@showPublicPage');
+
 Route::patch('books/{book}/status', 'BookController@updateStatus');
 Route::resource('books', 'BookController')->only(['index', 'store', 'destroy']);
 

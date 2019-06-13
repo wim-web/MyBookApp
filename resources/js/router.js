@@ -7,6 +7,7 @@ import Top from './pages/Top';
 import Mypage from './pages/Mypage';
 import Search from './pages/Search';
 import Register from './pages/Register';
+import Public from './pages/Public';
 
 Vue.use(VueRouter);
 
@@ -38,6 +39,11 @@ const routes = [
     beforeEnter: (to, from, next) => {
       redirectMypageOrNext(next);
     }
+  },
+  {
+    path: '/public/:name',
+    component: Public,
+    props: true,
   }
 ];
 

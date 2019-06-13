@@ -34,17 +34,19 @@
           </div>
         </div>
       </div>
-      <paginate 
-        :pageCount="pageCount"
-        :containerClass="'pagination'"
-        :page-class="'page-item'"
-        :page-link-class="'page-link'"
-        :prev-class="'page-item'"
-        :prev-link-class="'page-link'"
-        :next-class="'page-item'"
-        :next-link-class="'page-link'"
-        :clickHandler="fetchMybooksByPage">
-      </paginate>
+      <div v-show="togglePaginate">
+        <paginate 
+          :pageCount="pageCount"
+          :containerClass="'pagination'"
+          :page-class="'page-item'"
+          :page-link-class="'page-link'"
+          :prev-class="'page-item'"
+          :prev-link-class="'page-link'"
+          :next-class="'page-item'"
+          :next-link-class="'page-link'"
+          :clickHandler="fetchMybooksByPage">
+        </paginate>
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +61,8 @@ export default {
       status: {},
       pageCount: 0,
       page: 1,
-      loading: false
+      loading: false,
+      togglePaginate: false,
     };
   },
   components: {
@@ -72,7 +75,10 @@ export default {
 
       const response = await axios.get(`/books?page=${this.page}`).catch(err => err.response);
       if (response.status === 200) {
-        this.myBooks = response.data.data;
+        const booksArray = response.data.data;
+        this.setTogglePaginate(booksArray.length);
+        
+        this.myBooks = booksArray;
         this.pageCount = response.data.last_page;
       } else {
         alert('error');
@@ -86,7 +92,7 @@ export default {
 
       const response = await axios.delete(`/books/${id}`).catch(err => err.response);
       if (response.status === 200) {
-        this.fetchMyBooks(this.page);
+        this.fetchMyBooks();
       } else {
         alert('error');
       }
@@ -102,6 +108,13 @@ export default {
       this.page = page;
       this.fetchMyBooks();
     },
+    setTogglePaginate(length) {
+      if (length > 0) {
+        this.togglePaginate = true;
+      } else {
+        this.togglePaginate = false;
+      }
+    }
   },
   created() {
     this.fetchMyBooks();

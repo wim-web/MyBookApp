@@ -1984,6 +1984,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1992,7 +1994,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       status: {},
       pageCount: 0,
       page: 1,
-      loading: false
+      loading: false,
+      togglePaginate: false
     };
   },
   components: {
@@ -2003,7 +2006,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _fetchMyBooks = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var response;
+        var response, booksArray;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2019,7 +2022,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context.sent;
 
                 if (response.status === 200) {
-                  this.myBooks = response.data.data;
+                  booksArray = response.data.data;
+                  this.setTogglePaginate(booksArray.length);
+                  this.myBooks = booksArray;
                   this.pageCount = response.data.last_page;
                 } else {
                   alert('error');
@@ -2069,7 +2074,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context2.sent;
 
                 if (response.status === 200) {
-                  this.fetchMyBooks(this.page);
+                  this.fetchMyBooks();
                 } else {
                   alert('error');
                 }
@@ -2133,6 +2138,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     fetchMybooksByPage: function fetchMybooksByPage(page) {
       this.page = page;
       this.fetchMyBooks();
+    },
+    setTogglePaginate: function setTogglePaginate(length) {
+      if (length > 0) {
+        this.togglePaginate = true;
+      } else {
+        this.togglePaginate = false;
+      }
     }
   },
   created: function created() {
@@ -39851,21 +39863,36 @@ var render = function() {
             0
           ),
           _vm._v(" "),
-          _c("paginate", {
-            attrs: {
-              pageCount: _vm.pageCount,
-              containerClass: "pagination",
-              "page-class": "page-item",
-              "page-link-class": "page-link",
-              "prev-class": "page-item",
-              "prev-link-class": "page-link",
-              "next-class": "page-item",
-              "next-link-class": "page-link",
-              clickHandler: _vm.fetchMybooksByPage
-            }
-          })
-        ],
-        1
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.togglePaginate,
+                  expression: "togglePaginate"
+                }
+              ]
+            },
+            [
+              _c("paginate", {
+                attrs: {
+                  pageCount: _vm.pageCount,
+                  containerClass: "pagination",
+                  "page-class": "page-item",
+                  "page-link-class": "page-link",
+                  "prev-class": "page-item",
+                  "prev-link-class": "page-link",
+                  "next-class": "page-item",
+                  "next-link-class": "page-link",
+                  clickHandler: _vm.fetchMybooksByPage
+                }
+              })
+            ],
+            1
+          )
+        ]
       )
     ],
     1

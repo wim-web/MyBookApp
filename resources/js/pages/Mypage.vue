@@ -35,7 +35,7 @@
         </div>
       </div>
       <div v-show="togglePaginate">
-        <paginate 
+        <paginate
           :pageCount="pageCount"
           :containerClass="'pagination'"
           :page-class="'page-item'"
@@ -77,13 +77,13 @@ export default {
       if (response.status === 200) {
         const booksArray = response.data.data;
         this.setTogglePaginate(booksArray.length);
-        
+
         this.myBooks = booksArray;
         this.pageCount = response.data.last_page;
       } else {
         alert('error');
       }
-      
+
       this.loading = false;
     },
     async deleteMyBook(id) {

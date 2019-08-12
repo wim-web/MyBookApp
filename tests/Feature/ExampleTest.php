@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,8 +15,12 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
+        $user = User::create(['name' => 'test', 'password' => 'email'])->fresh();
+        $databaseUser = User::first();
         $response = $this->get('/');
 
         $response->assertStatus(200);
+        $this->assertEquals($user, $databaseUser);
+
     }
 }

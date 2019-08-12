@@ -3,13 +3,40 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.2-node-browsers
-
+        environment:
+          APP_DEBUG: true
+          APP_ENV: testing
+          APP_KEY: base64:+UwWnnYpLsd33SinWt30Ny/gYtsNv1vUnyw5wvBUlPw=
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: circle_test
+          DB_USERNAME: root
+          DB_PASSWORD: test
+      - image: circleci/postgres:11
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD: test
     steps:
       - checkout
+      - run: sudo apt-get install -y libpq-dev
+      - run: sudo docker-php-ext-install pdo pdo_pgsql
+      - run: sudo composer self-update
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.json" }}
+            - v1-dependencies-
+      - run: composer install -n --prefer-dist
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+      - run:
+          name: unit test
+          command: npm run test
 
-
-
-  deploy-prod:
+  deploy:
     machine:
       image: circleci/classic:edge
     steps:
@@ -30,7 +57,7 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-      - deploy-prod:
+      - deploy:
           requires:
             - build
           filters:

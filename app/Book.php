@@ -15,5 +15,9 @@ class Book extends Model
         'largeImageUrl',
         'status',
     ];
-    
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag');
+    }
 }

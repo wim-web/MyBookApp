@@ -17,11 +17,12 @@ class CreateBooksTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->string('title');
-            $table->text('item_caption')->nullable();
+            $table->text('itemCaption')->nullable();
             $table->string('author')->nullable();
-            $table->string('item_url')->nullable();
-            $table->string('large_image_url')->nullable();
+            $table->string('itemUrl')->nullable();
+            $table->string('largeImageUrl')->nullable();
             $table->text('memo')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

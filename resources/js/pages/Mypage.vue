@@ -23,7 +23,6 @@
                     <option value="wait">積んでる</option>
                     <option value="reading">読んでる</option>
                     <option value="finish">読んだよ</option>
-                    <option value="ok">理解した</option>
                   </select>
                 </div>
               </div>

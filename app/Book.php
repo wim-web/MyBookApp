@@ -20,9 +20,4 @@ class Book extends Model
     {
         return $this->belongsToMany('App\Tag');
     }
-
-    public function status()
-    {
-        return $this->belongsTo('APP\Status');
-    }
 }

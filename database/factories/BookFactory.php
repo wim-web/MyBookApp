@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Book::class, function (Faker $faker) {
     return [
-        "user_id" => "",
-        "status_id" => "",
+        "user_id" => function () {return factory(\App\User::class)->create()->id;},
+        "status_id" => function () {return factory(\App\Status::class)->create()->id;},
         "title" => $faker->word,
         "item_caption" => $faker->sentence,
         "author" => $faker->name,

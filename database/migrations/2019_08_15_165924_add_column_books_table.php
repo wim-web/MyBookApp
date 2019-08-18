@@ -14,7 +14,11 @@ class AddColumnBooksTable extends Migration
     public function up()
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->string('status')->nullable();
+            $table->unsignedInteger('status_id');
+
+            $table->foreign('status_id')
+                ->references('id')
+                ->on('statuses');
         });
     }
 
@@ -25,8 +29,6 @@ class AddColumnBooksTable extends Migration
      */
     public function down()
     {
-        Schema::table('books', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        Schema::dropColumn('status_id');
     }
 }

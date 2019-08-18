@@ -33,4 +33,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Book')->orderBy('id', 'desc');
     }
 
+    public function tags()
+    {
+        return $this->hasMany('APP\Tag');
+    }
+
 }

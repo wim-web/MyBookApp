@@ -10,12 +10,12 @@
               <div class="inline">
                 <div class="p-2">
                   <p class="img-wrap">
-                    <img :src="book.largeImageUrl">
+                    <img :src="book.large_image_url">
                   </p>
                 </div>
                 <div class="p-2 inline__right">
                   <div class="card-title">
-                    <a :href="book.itemUrl">{{ book.title }}</a>
+                    <a :href="book.item_url">{{ book.title }}</a>
                   </div>
                   <select v-model="book.status" v-on:change="updateStatus(book)" class="form-control">
                     <option disabled value></option>

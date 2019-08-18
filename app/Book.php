@@ -9,10 +9,10 @@ class Book extends Model
     protected $fillable = [
         'user_id',
         'title',
-        'itemCaption',
+        'item_caption',
         'author',
-        'itemUrl',
-        'largeImageUrl',
+        'item_url',
+        'large_image_url',
         'status',
     ];
 

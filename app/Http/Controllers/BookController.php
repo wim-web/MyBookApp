@@ -59,14 +59,9 @@ class BookController extends Controller
 
     // method
 
-    public function getLoginUserId()
-    {
-        return Auth::id();
-    }
-
     public function fetchLoginUsersBooks()
     {
-        $loginUser = $this->user->find($this->getLoginUserId());
+        $loginUser = User::find(1);
 
         return $loginUser->books()->paginate(12);
     }

@@ -29,7 +29,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $bookData = $request->all();
-        $bookData['user_id'] = $this->getLoginUserId();
+        $bookData['user_id'] = Auth::id();
         $this->book->fill($bookData)->save();
 
         return response('success', 201);
@@ -61,7 +61,7 @@ class BookController extends Controller
 
     public function fetchLoginUsersBooks()
     {
-        $loginUser = User::find(1);
+        $loginUser = Auth::user();
 
         return $loginUser->books()->paginate(12);
     }

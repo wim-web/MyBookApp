@@ -8,6 +8,6 @@ class Status extends Model
 {
     public function books()
     {
-        return $this->hasMany('APP\Book');
+        return $this->hasMany('App\Book');
     }
 }

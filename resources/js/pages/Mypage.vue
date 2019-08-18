@@ -10,12 +10,12 @@
               <div class="inline">
                 <div class="p-2">
                   <p class="img-wrap">
-                    <img :src="book.large_image_url">
+                    <img :src="book.largeImageUrl">
                   </p>
                 </div>
                 <div class="p-2 inline__right">
                   <div class="card-title">
-                    <a :href="book.item_url">{{ book.title }}</a>
+                    <a :href="book.itemUrl">{{ book.title }}</a>
                   </div>
                   <select v-model="book.status" v-on:change="updateStatus(book)" class="form-control">
                     <option disabled value></option>
@@ -23,7 +23,6 @@
                     <option value="wait">積んでる</option>
                     <option value="reading">読んでる</option>
                     <option value="finish">読んだよ</option>
-                    <option value="ok">理解した</option>
                   </select>
                 </div>
               </div>

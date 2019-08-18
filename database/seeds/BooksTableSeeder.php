@@ -12,15 +12,8 @@ class BooksTableSeeder extends Seeder
      */
     public function run()
     {
-        Book::create([
+        factory(Book::class, 10)->states('seeder')->create([
             'user_id' => 1,
-            'status_id' => 1,
-            'title' => 'testbook',
-            'item_caption' => null,
-            'author' => 'bob',
-            'item_url' => null,
-            'large_image_url' => null,
-            'memo' => 'i am so happy',
         ]);
     }
 }

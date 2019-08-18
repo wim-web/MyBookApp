@@ -17,3 +17,9 @@ $factory->define(Book::class, function (Faker $faker) {
         "memo" => $faker->sentence,
     ];
 });
+
+$factory->state(Book::class, 'seeder', function (Faker $faker) {
+    return [
+        "status_id" => $faker->numberBetween(1, 4),
+    ];
+});

@@ -15,7 +15,7 @@ class BookTagTableSeeder extends Seeder
         $tags = App\Tag::all();
         foreach ($books as $book) {
             $book->tags()->attach(
-                $tags->random(rand(1,3))->pluck('id')->toArray()
+                $tags->random(rand(1, 4))->pluck('id')->toArray()
             );
         }
     }

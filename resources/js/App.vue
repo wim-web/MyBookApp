@@ -1,4 +1,5 @@
 <template>
+  <v-app>
   <div>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <span class="navbar-brand">Navbar</span>
@@ -39,6 +40,7 @@
       </div>
     </main>
   </div>
+  </v-app>
 </template>
 
 <script>

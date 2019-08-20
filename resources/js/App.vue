@@ -1,6 +1,5 @@
 <template>
   <v-app>
-  <div>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <span class="navbar-brand">Navbar</span>
       <button
@@ -29,7 +28,7 @@
         </ul>
       </div>
     </nav>
-    <main>
+    <v-container>
       <div v-if="loading" class="pt-70px">
         <Loading/>
       </div>
@@ -38,8 +37,9 @@
           <router-view></router-view>
         </transition>
       </div>
-    </main>
-  </div>
+    </v-container>
+    
+    
   </v-app>
 </template>
 

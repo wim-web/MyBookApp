@@ -28,7 +28,7 @@
         </ul>
       </div>
     </nav>
-    <v-container>
+    
       <div v-if="loading" class="pt-70px">
         <Loading/>
       </div>
@@ -37,7 +37,6 @@
           <router-view></router-view>
         </transition>
       </div>
-    </v-container>
     
     
   </v-app>

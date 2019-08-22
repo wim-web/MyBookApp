@@ -12,8 +12,8 @@ $factory->define(Book::class, function (Faker $faker) {
         "title" => $faker->word,
         "itemCaption" => $faker->sentence,
         "author" => $faker->name,
-        "itemUrl" => $faker->imageUrl(),
-        "largeImageUrl" => $faker->imageUrl(),
+        "itemUrl" => 'https://placehold.jp/200x200.png',
+        "largeImageUrl" => 'https://placehold.jp/200x200.png',
         "memo" => $faker->sentence,
         "status" => $status[rand(0, 3)],
     ];

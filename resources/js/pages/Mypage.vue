@@ -1,57 +1,81 @@
 <template>
   <div>
     <h2 class="text-center mb-4">Mypage</h2>
-    <Loading v-show="loading"/>
-    <div v-show="!loading">
-      <div class="row">
-        <div v-for="book in myBooks" :key="book.id" class="col-12 col-md-6 col-xl-4">
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="inline">
-                <div class="p-2">
-                  <p class="img-wrap">
-                    <img :src="book.largeImageUrl">
-                  </p>
-                </div>
-                <div class="p-2 inline__right">
-                  <div class="card-title">
-                    <a :href="book.itemUrl">{{ book.title }}</a>
-                  </div>
-                  <select v-model="book.status" v-on:change="updateStatus(book)" class="form-control">
-                    <option disabled value></option>
-                    <option value="want">買いたい</option>
-                    <option value="wait">積んでる</option>
-                    <option value="reading">読んでる</option>
-                    <option value="finish">読んだよ</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <button class="btn btn-danger" @click="deleteMyBook(book.id)">
-              delete
-            </button>
-          </div>
-        </div>
+<!--    vuefity-->
+
+<!--    user info-->
+    <v-card
+            max-width="1000"
+            class="mx-auto"
+            height="300"
+    >
+      <div>
+      <v-avatar color="grey" size=70>
+        <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+      </v-avatar>
       </div>
-      <div v-show="togglePaginate">
-        <paginate
-          :pageCount="pageCount"
-          :containerClass="'pagination'"
-          :page-class="'page-item'"
-          :page-link-class="'page-link'"
-          :prev-class="'page-item'"
-          :prev-link-class="'page-link'"
-          :next-class="'page-item'"
-          :next-link-class="'page-link'"
-          :clickHandler="fetchMybooksByPage">
-        </paginate>
-      </div>
-    </div>
+      <p>name</p>
+      <p>url</p>
+    </v-card>
+  
+<!--    books-->
+    <v-card>
+      <v-tabs
+              background-color="grey"
+              color="deep-purple accent-4"
+              :grow=true
+      >
+        <v-tab>未読</v-tab>
+        <v-tab>完読</v-tab>
+        <v-tab>読書</v-tab>
+      
+        <v-tab-item
+                v-for="book in this.myBooks"
+                :key="book.id"
+        >
+          <v-container fluid>
+            <v-row>
+              <v-col
+                      v-for="i in 12"
+                      :key="i"
+                      cols="12"
+                      md="4"
+              >
+                <Book :book="book"/>
+
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-tab-item>
+      </v-tabs>
+    </v-card>
+  
+<!--    tag-->
+    <v-chip
+            class="ma-2"
+            color="pink"
+            label
+            text-color="white"
+    >
+      <v-icon left>label</v-icon>
+      PHP
+    </v-chip><v-chip
+            class="ma-2"
+            color="pink"
+            label
+            text-color="white"
+    >
+      <v-icon left>label</v-icon>
+      Java
+    </v-chip>
+    
+<!--    vuefity-->
   </div>
 </template>
 
 <script>
 import Loading from "../components/Loading";
+import Book from "../components/Book";
 
 export default {
   data() {
@@ -65,6 +89,7 @@ export default {
     };
   },
   components: {
+    Book,
     Loading
   },
   methods: {
@@ -124,25 +149,3 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.inline {
-  display: flex;
-  &__right {
-    width: 100%;
-  }
-}
-
-.img-wrap {
-  width: 150px;
-  height: 200px;
-  overflow: hidden;
-}
-
-.img-wrap img {
-  width: 100%;
-}
-
-.pagination {
-  justify-content: center;
-}
-</style>

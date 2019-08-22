@@ -1,34 +1,26 @@
 <template>
-  <div class="row">
-    <div v-for="book in books" :key="book.id" class="col-12 col-md-6 col-xl-4">
-      <div class="card mb-3">
-        <div class="card-body">
-          <div class="inline">
-            <div class="p-2">
-              <p class="img-wrap">
-                <img :src="book.largeImageUrl">
-              </p>
-            </div>
-            <div class="p-2 inline__right">
-              <div class="card-title">
-                <a :href="book.itemUrl">{{ book.title }}</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="btn btn-outline-primary" @click="addBookMylist(book)">
-          mybookに追加
-        </button>
-      </div>
-    </div>
-  </div>
+  <v-card>
+    <v-img
+            class="white--text"
+            height="200px"
+            :src="book.itemUrl"
+    >
+    </v-img>
+    <v-card-text>{{ book.title }}</v-card-text>
+    <v-btn class="ma-2" outlined large fab color="indigo">
+      <v-icon>edit</v-icon>
+    </v-btn>
+    <v-btn class="ma-2" outlined large fab color="indigo">
+      <v-icon>remove</v-icon>
+    </v-btn>
+  </v-card>
 </template>
 
 <script>
 export default {
   props: {
-    books: {
-      type: Array,
+    book: {
+      type: Object,
       required: true
     }
   },
@@ -47,21 +39,3 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.inline {
-  display: flex;
-  &__right {
-    width: 100%;
-  }
-}
-
-.img-wrap {
-  width: 150px;
-  height: 200px;
-  overflow: hidden;
-}
-
-.img-wrap img {
-  width: 100%;
-}
-</style>

@@ -25,29 +25,26 @@
               color="deep-purple accent-4"
               :grow=true
       >
+        
+        <v-tab>all</v-tab>
         <v-tab>未読</v-tab>
         <v-tab>完読</v-tab>
         <v-tab>読書</v-tab>
       
-        <v-tab-item
-                v-for="book in this.myBooks"
-                :key="book.id"
-        >
-          <v-container fluid>
-            <v-row>
-              <v-col
-                      v-for="i in 12"
-                      :key="i"
-                      cols="12"
-                      md="4"
-              >
-                <Book :book="book"/>
-
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tab-item>
+        
+        
       </v-tabs>
+      <v-row>
+      <v-col
+              v-for="book in this.myBooks"
+              :key="book.id"
+              cols="4"
+      >
+    
+        <Book :book="book"/>
+  
+      </v-col>
+      </v-row>
     </v-card>
   
 <!--    tag-->

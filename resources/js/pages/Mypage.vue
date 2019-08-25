@@ -4,7 +4,7 @@
 
     <!--    user info-->
     <v-card
-            max-width="800"
+            max-width="1000"
             class="mx-auto mb-10"
             height="300"
     >
@@ -15,6 +15,7 @@
       </div>
       <p>name</p>
       <p>url</p>
+      <PieChart />
     </v-card>
 
     <!--    books-->
@@ -71,6 +72,7 @@
 <script>
   import Loading from "../components/Loading";
   import Book from "../components/Book";
+  import PieChart from "../components/PieChart";
 
   export default {
     data() {
@@ -82,6 +84,7 @@
       };
     },
     components: {
+      PieChart,
       Book,
       Loading
     },

@@ -32,6 +32,7 @@ import router from './router';
 import Paginate from 'vuejs-paginate';
 import App from './App.vue';
 import vuetify from "./vuetify/boot";
+import Chart from 'chart.js';
 
 const createApp = async () => {
   await store.dispatch('checkIsLogin');

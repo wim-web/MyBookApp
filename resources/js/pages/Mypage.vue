@@ -4,7 +4,7 @@
 
     <!--    user info-->
     <v-card
-            max-width="1000"
+            max-width="800"
             class="mx-auto mb-10"
             height="300"
     >
@@ -25,10 +25,9 @@
               :grow=true
       >
         <v-tab
-                v-for="(value, key) in statuses"
-                :key="key"
+                v-for="item in statuses"
                 class="ma-0"
-                @click="status = key">{{ value }}
+                @click="status = item">{{ item }}
         </v-tab>
       </v-tabs>
       <v-row>
@@ -38,8 +37,9 @@
         >
 
           <Book
-                  :book="book"
+                  :item="book"
                   @delete="deleteBook(book.id)"
+                  @updateBook="updateBook"
           />
 
         </v-col>
@@ -77,8 +77,8 @@
       return {
         books: [],
         loading: false,
-        statuses: {all: 'すべて', wait: '未読', reading: '読み中', finish: '完読', want: '欲しい'},
-        status: 'all',
+        statuses: ['すべて', '未読', '読み中', '完読', '欲しい'],
+        status: 'すべて',
       };
     },
     components: {
@@ -99,12 +99,11 @@
 
         this.loading = false;
       },
-      async updateStatus(selectedBook) {
-        //todo:error handling
-        const statusObj = {status: selectedBook.status};
-        const response = await axios.patch(`/books/${selectedBook.id}/status`, statusObj)
+      updateBook: async function (book) {
+        const response = await axios.patch(`/books/${book.id}`, book)
             .catch(err => err);
         if (response.status !== 200) return alert('error');
+        this.fetchMyBooks();
       },
       async deleteBook(id) {
         const deleteFlg = confirm("delete?");
@@ -120,14 +119,11 @@
     },
     computed: {
       filteredBooks: function () {
-        if (this.status === 'all') return this.books;
+        if (this.status === 'すべて') return this.books;
         return this.books.filter(function ($r) {
           if ($r.status === this.status) return $r;
         }, this);
       }
-    },
-    watch: {
-
     },
     created() {
       this.fetchMyBooks();

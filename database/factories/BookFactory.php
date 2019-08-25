@@ -6,7 +6,7 @@ use App\Book;
 use Faker\Generator as Faker;
 
 $factory->define(Book::class, function (Faker $faker) {
-    $status = ['wait', 'reading', 'want', 'finish'];
+    $status = ['未読', '読み中', '欲しい', '完読'];
     return [
         "user_id" => function () {return factory(\App\User::class)->create()->id;},
         "title" => $faker->word,

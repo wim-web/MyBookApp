@@ -42,13 +42,10 @@ class BookController extends Controller
         return response('success', 200);
     }
 
-    public function updateStatus(Request $request, Book $book)
+    public function update(Request $request, Book $book)
     {
-        $status = $request->all();
-        $book->fill($status)->save();
-        $loginUsersBooks = $this->fetchLoginUsersBooks();
-
-        return $loginUsersBooks;
+        $book->fill($request->all())->save();
+        return response('success', 200);
     }
 
     public function showPublicPage(String $name)

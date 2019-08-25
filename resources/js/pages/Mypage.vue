@@ -5,7 +5,7 @@
     <!--    user info-->
     <v-card
             max-width="1000"
-            class="mx-auto"
+            class="mx-auto mb-10"
             height="300"
     >
       <div>
@@ -24,23 +24,23 @@
               color="deep-purple accent-4"
               :grow=true
       >
-
-        <v-tab class="ma-0" @click="filterByStatus('all')">all</v-tab>
-        <v-tab @click="filterByStatus('wait')">未読</v-tab>
-        <v-tab @click="filterByStatus('reading')">読み中</v-tab>
-        <v-tab @click="filterByStatus('finish')">完読</v-tab>
-        <v-tab @click="filterByStatus('want')">欲しい</v-tab>
-
+        <v-tab
+                v-for="(value, key) in statuses"
+                :key="key"
+                class="ma-0"
+                @click="status = key">{{ value }}
+        </v-tab>
       </v-tabs>
       <v-row>
         <v-col
-                v-for="book in this.books"
+                v-for="book in this.filteredBooks"
                 :key="book.id"
-                cols="4"
-                md="6"
         >
 
-          <Book :book="book"/>
+          <Book
+                  :book="book"
+                  @delete="deleteBook(book.id)"
+          />
 
         </v-col>
       </v-row>
@@ -75,9 +75,10 @@
   export default {
     data() {
       return {
-        myBooks: [],
         books: [],
         loading: false,
+        statuses: {all: 'すべて', wait: '未読', reading: '読み中', finish: '完読', want: '欲しい'},
+        status: 'all',
       };
     },
     components: {
@@ -91,19 +92,21 @@
 
         const response = await axios.get(`/books?page=${this.page}`).catch(err => err.response);
         if (response.status === 200) {
-          const booksArray = response.data.data;
-          this.setTogglePaginate(booksArray.length);
-
-          this.myBooks = booksArray;
-          this.books = this.myBooks;
-          this.pageCount = response.data.last_page;
+          this.books = response.data.data;
         } else {
           alert('error');
         }
 
         this.loading = false;
       },
-      async deleteMyBook(id) {
+      async updateStatus(selectedBook) {
+        //todo:error handling
+        const statusObj = {status: selectedBook.status};
+        const response = await axios.patch(`/books/${selectedBook.id}/status`, statusObj)
+            .catch(err => err);
+        if (response.status !== 200) return alert('error');
+      },
+      async deleteBook(id) {
         const deleteFlg = confirm("delete?");
         if (!deleteFlg) return;
 
@@ -114,30 +117,17 @@
           alert('error');
         }
       },
-      async updateStatus(selectedBook) {
-        //todo:error handling
-        const statusObj = {status: selectedBook.status};
-        const response = await axios.patch(`/books/${selectedBook.id}/status`, statusObj)
-            .catch(err => err);
-        if (response.status !== 200) return alert('error');
-      },
-      fetchMybooksByPage(page) {
-        this.page = page;
-        this.fetchMyBooks();
-      },
-      setTogglePaginate(length) {
-        if (length > 0) {
-          this.togglePaginate = true;
-        } else {
-          this.togglePaginate = false;
-        }
-      },
-      filterByStatus(status) {
-        if (status === 'all') return this.books = this.myBooks;
-        this.books = this.myBooks.filter(function ($r) {
-          if ($r.status === status) return $r
-        });
+    },
+    computed: {
+      filteredBooks: function () {
+        if (this.status === 'all') return this.books;
+        return this.books.filter(function ($r) {
+          if ($r.status === this.status) return $r;
+        }, this);
       }
+    },
+    watch: {
+
     },
     created() {
       this.fetchMyBooks();

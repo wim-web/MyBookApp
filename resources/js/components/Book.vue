@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card max-width="200px" >
     <v-img
             class="white--text"
             height="200px"
@@ -10,7 +10,10 @@
     <v-btn class="ma-2" outlined large fab color="indigo">
       <v-icon>edit</v-icon>
     </v-btn>
-    <v-btn class="ma-2" outlined large fab color="indigo">
+    <v-btn
+            class="ma-2" outlined large fab
+            color="indigo"
+            @click="$emit('delete')">
       <v-icon>remove</v-icon>
     </v-btn>
   </v-card>
@@ -24,18 +27,6 @@ export default {
       required: true
     }
   },
-  methods: {
-    async addBookMylist(bookData) {
-      //todo:error handling
-      const response = await axios.post(`/books`, bookData).catch(err => err.response);
-      if (response.status === 201) {
-        alert('success');
-      } else {
-        alert('error');
-      }
-
-    }
-  }
 };
 </script>
 

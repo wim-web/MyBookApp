@@ -3,20 +3,32 @@
     <h2 class="text-center mb-4">Mypage</h2>
 
     <!--    user info-->
-    <v-card
-            max-width="1000"
-            class="mx-auto mb-10"
-            height="300"
-    >
-      <div>
-        <v-avatar color="grey" size=70>
+
+      <v-row class="ma-0">
+      <v-col  class="ma-auto"
+              cols="12" sm="6" md="6">
+        <v-card>
+        <v-row>
+          <v-col cols="4" class="text-center">
+        <v-avatar color="grey" size=70 class="ma-auto">
           <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
         </v-avatar>
-      </div>
+          </v-col>
+          <v-col cols="8">
       <p>name</p>
       <p>url</p>
-      <PieChart />
-    </v-card>
+        </v-col>
+        </v-row>
+        </v-card>
+      </v-col>
+
+
+      <v-col cols="12" sm="6">
+        <v-card>
+        <PieChart :chart-data="chartData" class="small" :options="options"/>
+        </v-card>
+      </v-col>
+      </v-row>
 
     <!--    books-->
     <v-card>
@@ -81,7 +93,15 @@
         loading: false,
         statuses: ['すべて', '未読', '読み中', '完読', '欲しい'],
         status: 'すべて',
-      };
+        options: {
+          legend: {
+            display: true,
+            position: 'right',
+          },
+          responsive: true,
+          maintainAspectRatio: true,
+        }
+      }
     },
     components: {
       PieChart,
@@ -123,9 +143,32 @@
     computed: {
       filteredBooks: function () {
         if (this.status === 'すべて') return this.books;
-        return this.books.filter(function ($r) {
-          if ($r.status === this.status) return $r;
+        return this.books.filter(function (r) {
+          if (r.status === this.status) return r;
         }, this);
+      },
+      chartData: function () {
+        return {
+          labels: ['すべて', '未読', '読み中', '完読', '欲しい'],
+              datasets: [
+          {
+            backgroundColor: [
+              'rgba(255, 60, 60, 0.3)',
+              'rgba(60, 60, 60, 0.3)',
+              'rgba(60, 255, 60, 0.3)',
+              'rgba(60, 60, 255, 0.3)',
+              'rgba(100, 60, 200, 0.3)',
+            ],
+            data: [
+              this.books.filter(function(r){return r.status === 'すべて'}).length,
+              this.books.filter(function(r){return r.status === '未読'}).length,
+              this.books.filter(function(r){return r.status === '読み中'}).length,
+              this.books.filter(function(r){return r.status === '完読'}).length,
+              this.books.filter(function(r){return r.status === '欲しい'}).length,
+            ]
+          }
+        ],
+        };
       }
     },
     created() {
@@ -133,4 +176,12 @@
     },
   };
 </script>
+
+<style scoped>
+  .small {
+    max-width: 300px;
+    margin: auto;
+  }
+
+</style>
 

@@ -1,83 +1,85 @@
 <template>
   <div>
-    <h2 class="text-center mb-4">Mypage</h2>
-
     <!--    user info-->
-
-      <v-row class="ma-0">
-      <v-col  class="ma-auto"
-              cols="12" sm="6" md="6">
+    <v-row class="ma-0">
+      <v-col class="ma-auto"
+             cols="12" sm="6" md="6">
         <v-card>
-        <v-row>
-          <v-col cols="4" class="text-center">
-        <v-avatar color="grey" size=70 class="ma-auto">
-          <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
-        </v-avatar>
-          </v-col>
-          <v-col cols="8">
-      <p>name</p>
-      <p>url</p>
-        </v-col>
-        </v-row>
+          <v-row>
+            <v-col cols="4" class="text-center">
+              <v-avatar color="grey" size=70 class="ma-auto">
+                <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+              </v-avatar>
+            </v-col>
+            <v-col cols="8">
+              <p>name</p>
+              <p>url</p>
+            </v-col>
+          </v-row>
         </v-card>
       </v-col>
-
 
       <v-col cols="12" sm="6">
         <v-card>
-        <PieChart :chart-data="chartData" class="small" :options="options"/>
+          <PieChart :chart-data="chartData" class="small" :options="options"/>
         </v-card>
       </v-col>
-      </v-row>
+    </v-row>
 
     <!--    books-->
     <v-card>
       <v-tabs
-              background-color="grey"
-              color="deep-purple accent-4"
+              background-color="transparent"
+              color="black accent-4"
               :grow=true
       >
         <v-tab
                 v-for="item in statuses"
+                color="#FFE600"
                 class="ma-0"
                 @click="status = item">{{ item }}
         </v-tab>
       </v-tabs>
-      <v-row>
-        <v-col
-                v-for="book in this.filteredBooks"
-                :key="book.id"
-        >
+      <v-container>
+        <v-row>
+          <v-col
+                  v-for="book in this.filteredBooks"
+                  :key="book.id"
+                  cols="6"
+                  sm="4"
+                  lg="3"
+          >
 
-          <Book
-                  :item="book"
-                  @delete="deleteBook(book.id)"
-                  @updateBook="updateBook"
-          />
+            <Book
+                    :item="book"
+                    @delete="deleteBook(book.id)"
+                    @updateBook="updateBook"
+            />
 
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card>
 
     <!--    tag-->
-    <v-chip
-            class="ma-2"
-            color="pink"
-            label
-            text-color="white"
-    >
-      <v-icon left>label</v-icon>
-      PHP
-    </v-chip>
-    <v-chip
-            class="ma-2"
-            color="pink"
-            label
-            text-color="white"
-    >
-      <v-icon left>label</v-icon>
-      Java
-    </v-chip>
+<!--    <v-chip-->
+<!--            class="ma-2"-->
+<!--            color="pink"-->
+<!--            label-->
+<!--            text-color="white"-->
+<!--    >-->
+<!--      <v-icon left>label</v-icon>-->
+<!--      PHP-->
+<!--    </v-chip>-->
+<!--    <v-chip-->
+<!--            class="ma-2"-->
+<!--            color="pink"-->
+<!--            label-->
+<!--            text-color="white"-->
+<!--    >-->
+<!--      <v-icon left>label</v-icon>-->
+<!--      Java-->
+<!--    </v-chip>-->
   </div>
 </template>
 
@@ -96,7 +98,7 @@
         options: {
           legend: {
             display: true,
-            position: 'right',
+            position: 'top',
           },
           responsive: true,
           maintainAspectRatio: true,
@@ -149,25 +151,31 @@
       },
       chartData: function () {
         return {
-          labels: ['すべて', '未読', '読み中', '完読', '欲しい'],
-              datasets: [
-          {
-            backgroundColor: [
-              'rgba(255, 60, 60, 0.3)',
-              'rgba(60, 60, 60, 0.3)',
-              'rgba(60, 255, 60, 0.3)',
-              'rgba(60, 60, 255, 0.3)',
-              'rgba(100, 60, 200, 0.3)',
-            ],
-            data: [
-              this.books.filter(function(r){return r.status === 'すべて'}).length,
-              this.books.filter(function(r){return r.status === '未読'}).length,
-              this.books.filter(function(r){return r.status === '読み中'}).length,
-              this.books.filter(function(r){return r.status === '完読'}).length,
-              this.books.filter(function(r){return r.status === '欲しい'}).length,
-            ]
-          }
-        ],
+          labels: ['未読', '読み中', '完読', '欲しい'],
+          datasets: [
+            {
+              backgroundColor: [
+                'rgba(0,255,136,0.6)',
+                'rgba(0,170,255,0.6)',
+                'rgba(255,0,187,0.6)',
+                'rgba(255,230,0,0.6)',
+              ],
+              data: [
+                this.books.filter(function (r) {
+                  return r.status === '未読'
+                }).length,
+                this.books.filter(function (r) {
+                  return r.status === '読み中'
+                }).length,
+                this.books.filter(function (r) {
+                  return r.status === '完読'
+                }).length,
+                this.books.filter(function (r) {
+                  return r.status === '欲しい'
+                }).length,
+              ]
+            }
+          ],
         };
       }
     },
@@ -181,7 +189,7 @@
   .small {
     max-width: 300px;
     margin: auto;
+    padding: 15px;
   }
-
 </style>
 

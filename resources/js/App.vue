@@ -32,11 +32,11 @@
       <div v-if="loading" class="pt-70px">
         <Loading/>
       </div>
-      <div v-else class="container pt-70px">
+    <v-container class="pt-70px" fluid>
         <transition name="router" mode="out-in">
           <router-view></router-view>
         </transition>
-      </div>
+    </v-container>
     
     
   </v-app>
@@ -88,7 +88,7 @@ export default {
 
 @media (min-width: 768px) {
   .container {
-    max-width: 800px;
+    max-width: 900px;
   }
 }
 

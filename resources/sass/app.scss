@@ -6,3 +6,11 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.row {
+  margin: 0;
+}
+
+.v-btn--fab {
+  outline: none !important;
+}

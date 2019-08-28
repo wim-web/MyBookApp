@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-app>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <span class="navbar-brand">Navbar</span>
       <button
@@ -28,17 +28,18 @@
         </ul>
       </div>
     </nav>
-    <main>
+    
       <div v-if="loading" class="pt-70px">
         <Loading/>
       </div>
-      <div v-else class="container pt-70px">
+    <v-container class="pt-70px" fluid>
         <transition name="router" mode="out-in">
           <router-view></router-view>
         </transition>
-      </div>
-    </main>
-  </div>
+    </v-container>
+    
+    
+  </v-app>
 </template>
 
 <script>
@@ -87,7 +88,7 @@ export default {
 
 @media (min-width: 768px) {
   .container {
-    max-width: 800px;
+    max-width: 900px;
   }
 }
 

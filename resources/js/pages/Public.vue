@@ -72,7 +72,7 @@ export default {
   methods: {
     async fetchBooksByUser() {
       this.loading = true;
-      const response = await axios.get(`/public/${this.name}/show?page=${this.page}`);
+      const response = await axios.get(`/${this.name}/?page=${this.page}`);
       console.log(response)
       if (response.status === 200) {
         const booksArray = response.data.data;

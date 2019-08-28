@@ -15,7 +15,7 @@ Route::get('/user', function(){
     return Auth::user();
 });
 
-Route::get('public/{name}/show', 'BookController@showPublicPage');
+Route::get('/{name}', 'PublicController');
 
 Route::resource('books', 'BookController');
 

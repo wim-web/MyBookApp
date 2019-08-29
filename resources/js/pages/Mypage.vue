@@ -84,7 +84,6 @@
 </template>
 
 <script>
-  import Loading from "../components/Loading";
   import Book from "../components/Book";
   import PieChart from "../components/PieChart";
 
@@ -92,7 +91,6 @@
     data() {
       return {
         books: [],
-        loading: false,
         statuses: ['すべて', '未読', '読み中', '完読', '欲しい'],
         status: 'すべて',
         options: {
@@ -108,39 +106,34 @@
     components: {
       PieChart,
       Book,
-      Loading
     },
     methods: {
       async fetchMyBooks() {
-        //todo: error handling
-        this.loading = true;
-
         const response = await axios.get(`/books?page=${this.page}`).catch(err => err.response);
         if (response.status === 200) {
           this.books = response.data.data;
         } else {
           alert('error');
         }
-
-        this.loading = false;
       },
       updateBook: async function (book) {
-        const response = await axios.patch(`/books/${book.id}`, book)
-            .catch(err => err);
-        if (response.status !== 200) return alert('error');
-        this.fetchMyBooks();
+        const response = await axios.patch(`/books/${book.id}`, book).catch(err => err);
+        this.fetchOrError(response.status)
       },
       async deleteBook(id) {
         const deleteFlg = confirm("delete?");
         if (!deleteFlg) return;
 
         const response = await axios.delete(`/books/${id}`).catch(err => err.response);
-        if (response.status === 200) {
+        this.fetchOrError(response.status)
+      },
+      fetchOrError(status) {
+        if (status === 200) {
           this.fetchMyBooks();
         } else {
           alert('error');
         }
-      },
+      }
     },
     computed: {
       filteredBooks: function () {
@@ -161,22 +154,19 @@
                 'rgba(255,230,0,0.6)',
               ],
               data: [
-                this.books.filter(function (r) {
-                  return r.status === '未読'
-                }).length,
-                this.books.filter(function (r) {
-                  return r.status === '読み中'
-                }).length,
-                this.books.filter(function (r) {
-                  return r.status === '完読'
-                }).length,
-                this.books.filter(function (r) {
-                  return r.status === '欲しい'
-                }).length,
+                this.BooksNum('未読'),
+                this.BooksNum('読み中'),
+                this.BooksNum('完読'),
+                this.BooksNum('欲しい'),
               ]
             }
           ],
         };
+      },
+      BooksNum: function (status) {
+        this.books.filter(function (r){
+          return r.status === status
+        }).length;
       }
     },
     created() {

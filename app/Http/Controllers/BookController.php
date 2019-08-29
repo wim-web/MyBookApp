@@ -25,7 +25,7 @@ class BookController extends Controller
     {
         $books = $this->user->fetchBooks();
 
-        return $books;
+        return ['books' => $books, 'user' => $this->user];
     }
 
     public function store(Request $request)

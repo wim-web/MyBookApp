@@ -12,8 +12,8 @@
               </v-avatar>
             </v-col>
             <v-col cols="8">
-              <p>name</p>
-              <p>url</p>
+              <p>{{ user.name }}</p>
+              <p><a :href=" url + '/public/' + user.name ">public</a></p>
             </v-col>
           </v-row>
         </v-card>
@@ -35,6 +35,7 @@
       >
         <v-tab
                 v-for="item in statuses"
+                :key="item"
                 color="#FFE600"
                 class="ma-0"
                 @click="status = item">{{ item }}
@@ -62,24 +63,24 @@
     </v-card>
 
     <!--    tag-->
-<!--    <v-chip-->
-<!--            class="ma-2"-->
-<!--            color="pink"-->
-<!--            label-->
-<!--            text-color="white"-->
-<!--    >-->
-<!--      <v-icon left>label</v-icon>-->
-<!--      PHP-->
-<!--    </v-chip>-->
-<!--    <v-chip-->
-<!--            class="ma-2"-->
-<!--            color="pink"-->
-<!--            label-->
-<!--            text-color="white"-->
-<!--    >-->
-<!--      <v-icon left>label</v-icon>-->
-<!--      Java-->
-<!--    </v-chip>-->
+    <!--    <v-chip-->
+    <!--            class="ma-2"-->
+    <!--            color="pink"-->
+    <!--            label-->
+    <!--            text-color="white"-->
+    <!--    >-->
+    <!--      <v-icon left>label</v-icon>-->
+    <!--      PHP-->
+    <!--    </v-chip>-->
+    <!--    <v-chip-->
+    <!--            class="ma-2"-->
+    <!--            color="pink"-->
+    <!--            label-->
+    <!--            text-color="white"-->
+    <!--    >-->
+    <!--      <v-icon left>label</v-icon>-->
+    <!--      Java-->
+    <!--    </v-chip>-->
   </div>
 </template>
 
@@ -90,7 +91,9 @@
   export default {
     data() {
       return {
+        user: {},
         books: [],
+        url: location.origin,
         statuses: ['すべて', '未読', '読み中', '完読', '欲しい'],
         status: 'すべて',
         options: {
@@ -111,7 +114,8 @@
       async fetchMyBooks() {
         const response = await axios.get(`/books?page=${this.page}`).catch(err => err.response);
         if (response.status === 200) {
-          this.books = response.data.data;
+          this.books = response.data.books.data;
+          this.user = response.data.user;
         } else {
           alert('error');
         }
@@ -133,7 +137,7 @@
         } else {
           alert('error');
         }
-      }
+      },
     },
     computed: {
       filteredBooks: function () {
@@ -154,25 +158,20 @@
                 'rgba(255,230,0,0.6)',
               ],
               data: [
-                this.BooksNum('未読'),
-                this.BooksNum('読み中'),
-                this.BooksNum('完読'),
-                this.BooksNum('欲しい'),
+                this.books.filter( r => r.status === '未読').length,
+                this.books.filter( r => r.status === '読み中').length,
+                this.books.filter( r => r.status === '完読').length,
+                this.books.filter( r => r.status === '欲しい').length,
               ]
             }
           ],
         };
       },
-      BooksNum: function (status) {
-        this.books.filter(function (r){
-          return r.status === status
-        }).length;
-      }
     },
     created() {
       this.fetchMyBooks();
     },
-  };
+  }
 </script>
 
 <style scoped>

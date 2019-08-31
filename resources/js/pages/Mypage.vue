@@ -13,16 +13,18 @@
             </v-col>
             <v-col cols="8">
               <p>{{ user.name }}</p>
-              <p><a :href=" url + '/public/' + user.name ">public</a></p>
+              <p><a :href=" url + '/public/' + user.name " target="_blank">public</a></p>
             </v-col>
           </v-row>
         </v-card>
-        <router-link to="/search">
-        <v-btn>
-          <v-icon left>menu_book</v-icon>
-          Add
-        </v-btn>
-        </router-link>
+        <div class="d-flex justify-center mt-5">
+          <router-link to="/search">
+            <v-btn>
+              <v-icon left>menu_book</v-icon>
+              Add
+            </v-btn>
+          </router-link>
+        </div>
       </v-col>
 
       <v-col cols="12" sm="6">
@@ -122,7 +124,7 @@
       async fetchMyBooks() {
         const response = await axios.get(`/books?page=${this.page}`).catch(err => err.response);
         if (response.status === 200) {
-          this.books = response.data.books.data;
+          this.books = response.data.books;
           this.user = response.data.user;
         } else {
           alert('error');
@@ -166,10 +168,10 @@
                 'rgba(255,230,0,0.6)',
               ],
               data: [
-                this.books.filter( r => r.status === '未読').length,
-                this.books.filter( r => r.status === '読み中').length,
-                this.books.filter( r => r.status === '完読').length,
-                this.books.filter( r => r.status === '欲しい').length,
+                this.books.filter(r => r.status === '未読').length,
+                this.books.filter(r => r.status === '読み中').length,
+                this.books.filter(r => r.status === '完読').length,
+                this.books.filter(r => r.status === '欲しい').length,
               ]
             }
           ],

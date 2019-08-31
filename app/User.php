@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function fetchBooks()
     {
-        return $this->books()->paginate(12);
+        return $this->books()->get();
     }
 
 }

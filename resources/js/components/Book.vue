@@ -3,7 +3,7 @@
     <v-img
             class="white--text"
             max-height="200px"
-            :src="book.itemUrl"
+            :src="book.largeImageUrl"
     >
     </v-img>
     <v-card-text>{{ book.title }}</v-card-text>

@@ -18,18 +18,36 @@
     <p v-show="showSearchResultCount">検索結果:{{ searchResultCount }}</p>
     <Loading v-show="loading"/>
     <div v-show="searchResultCount > 0 && !loading">
-      <Book :books="books"/>
-      <paginate 
-        :pageCount="pageCount"
-        :containerClass="'pagination'"
-        :page-class="'page-item'"
-        :page-link-class="'page-link'"
-        :prev-class="'page-item'"
-        :prev-link-class="'page-link'"
-        :next-class="'page-item'"
-        :next-link-class="'page-link'"
-        :clickHandler="fetchBooksDataByPage">
-      </paginate>
+      <v-card>
+        <v-container>
+          <v-row>
+            <v-col
+                    v-for="book in books"
+                    :key="book.id"
+                    cols="6"
+                    sm="4"
+                    lg="3"
+            >
+
+              <Book
+                      :item="book"
+              />
+
+            </v-col>
+          </v-row>
+          <paginate
+                  :pageCount="pageCount"
+                  :containerClass="'pagination'"
+                  :page-class="'page-item'"
+                  :page-link-class="'page-link'"
+                  :prev-class="'page-item'"
+                  :prev-link-class="'page-link'"
+                  :next-class="'page-item'"
+                  :next-link-class="'page-link'"
+                  :clickHandler="fetchBooksDataByPage">
+          </paginate>
+        </v-container>
+      </v-card>
     </div>
   </div>
 </template>

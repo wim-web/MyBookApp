@@ -17,10 +17,12 @@
             </v-col>
           </v-row>
         </v-card>
+        <router-link to="/search">
         <v-btn>
           <v-icon left>menu_book</v-icon>
           Add
         </v-btn>
+        </router-link>
       </v-col>
 
       <v-col cols="12" sm="6">

@@ -8,7 +8,7 @@
       >
         <v-icon small>{{ role }}</v-icon>
       </v-btn>
-      <v-btn v-if="role === 'customAdd'" v-on="on">
+      <v-btn v-else-if="role === 'customAdd'" v-on="on">
         <v-icon left>menu_book</v-icon>
         Custom Add
       </v-btn>

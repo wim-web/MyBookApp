@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-center mb-4">Add Book</h2>
+    <h2 class="text-center mb-4">Add Book to MyList</h2>
     <v-row>
       <v-col cols="12" sm="5" class="d-flex justify-center align-center">
     <form @submit.prevent="fetchBooksData()">
@@ -144,6 +144,9 @@
         this.fetchBooksData(page);
       }
     },
+    created() {
+      this.$store.commit('showMenu');
+    }
   };
 </script>
 

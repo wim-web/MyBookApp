@@ -1,106 +1,113 @@
 <template>
   <div>
+    <div v-if="loading" class="pt-70px">
+      <Loading/>
+    </div>
     <!--    user info-->
-    <v-row class="ma-0">
-      <v-col class="ma-auto"
-             cols="12" sm="6" md="6">
-        <v-card>
+    <div v-else>
+      <v-row class="ma-0">
+        <v-col class="ma-auto"
+               cols="12" sm="6" md="6">
+          <v-card>
+            <v-row>
+              <v-col cols="4" class="text-center">
+                <v-avatar color="grey" size=70 class="ma-auto">
+                  <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+                </v-avatar>
+              </v-col>
+              <v-col cols="8">
+                <p>{{ user.name }}</p>
+                <p><a :href=" url + '/public/' + user.name " target="_blank">public</a></p>
+              </v-col>
+            </v-row>
+          </v-card>
+          <div class="d-flex justify-center mt-5">
+            <router-link to="/search" class="link-none">
+              <v-btn>
+                <v-icon left>menu_book</v-icon>
+                Add
+              </v-btn>
+            </router-link>
+          </div>
+        </v-col>
+
+        <v-col cols="12" sm="6">
+          <v-card>
+            <PieChart :chart-data="chartData" class="small" :options="options"/>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <!--    books-->
+      <v-card>
+        <v-tabs
+                background-color="transparent"
+                color="black accent-4"
+                :grow=true
+        >
+          <v-tab
+                  v-for="item in statuses"
+                  :key="item"
+                  color="#FFE600"
+                  class="ma-0"
+                  @click="status = item">{{ item }}
+          </v-tab>
+        </v-tabs>
+        <v-container>
           <v-row>
-            <v-col cols="4" class="text-center">
-              <v-avatar color="grey" size=70 class="ma-auto">
-                <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
-              </v-avatar>
-            </v-col>
-            <v-col cols="8">
-              <p>{{ user.name }}</p>
-              <p><a :href=" url + '/public/' + user.name " target="_blank">public</a></p>
+            <v-col
+                    v-for="book in this.filteredBooks"
+                    :key="book.id"
+                    cols="6"
+                    sm="4"
+                    lg="3"
+            >
+
+              <Book
+                      :item="book"
+                      :destroy="true"
+                      :role="'edit'"
+                      @delete="deleteBook(book.id)"
+                      @updateBook="updateBook"
+              />
+
             </v-col>
           </v-row>
-        </v-card>
-        <div class="d-flex justify-center mt-5">
-          <router-link to="/search">
-            <v-btn>
-              <v-icon left>menu_book</v-icon>
-              Add
-            </v-btn>
-          </router-link>
-        </div>
-      </v-col>
+        </v-container>
+      </v-card>
 
-      <v-col cols="12" sm="6">
-        <v-card>
-          <PieChart :chart-data="chartData" class="small" :options="options"/>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <!--    books-->
-    <v-card>
-      <v-tabs
-              background-color="transparent"
-              color="black accent-4"
-              :grow=true
-      >
-        <v-tab
-                v-for="item in statuses"
-                :key="item"
-                color="#FFE600"
-                class="ma-0"
-                @click="status = item">{{ item }}
-        </v-tab>
-      </v-tabs>
-      <v-container>
-        <v-row>
-          <v-col
-                  v-for="book in this.filteredBooks"
-                  :key="book.id"
-                  cols="6"
-                  sm="4"
-                  lg="3"
-          >
-
-            <Book
-                    :item="book"
-                    :destroy="true"
-                    :role="'edit'"
-                    @delete="deleteBook(book.id)"
-                    @updateBook="updateBook"
-            />
-
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card>
-
-    <!--    tag-->
-    <!--    <v-chip-->
-    <!--            class="ma-2"-->
-    <!--            color="pink"-->
-    <!--            label-->
-    <!--            text-color="white"-->
-    <!--    >-->
-    <!--      <v-icon left>label</v-icon>-->
-    <!--      PHP-->
-    <!--    </v-chip>-->
-    <!--    <v-chip-->
-    <!--            class="ma-2"-->
-    <!--            color="pink"-->
-    <!--            label-->
-    <!--            text-color="white"-->
-    <!--    >-->
-    <!--      <v-icon left>label</v-icon>-->
-    <!--      Java-->
-    <!--    </v-chip>-->
+      <!--    tag-->
+      <!--    <v-chip-->
+      <!--            class="ma-2"-->
+      <!--            color="pink"-->
+      <!--            label-->
+      <!--            text-color="white"-->
+      <!--    >-->
+      <!--      <v-icon left>label</v-icon>-->
+      <!--      PHP-->
+      <!--    </v-chip>-->
+      <!--    <v-chip-->
+      <!--            class="ma-2"-->
+      <!--            color="pink"-->
+      <!--            label-->
+      <!--            text-color="white"-->
+      <!--    >-->
+      <!--      <v-icon left>label</v-icon>-->
+      <!--      Java-->
+      <!--    </v-chip>-->
+    </div>
   </div>
 </template>
 
 <script>
   import Book from "../components/Book";
   import PieChart from "../components/PieChart";
+  import Loading from "../components/Loading";
 
   export default {
     data() {
       return {
+        loading: true,
         user: {},
         books: [],
         url: location.origin,
@@ -119,6 +126,7 @@
     components: {
       PieChart,
       Book,
+      Loading,
     },
     methods: {
       async fetchMyBooks() {
@@ -129,6 +137,7 @@
         } else {
           alert('error');
         }
+        this.loading = false;
       },
       updateBook: async function (book) {
         const response = await axios.patch(`/books/${book.id}`, book).catch(err => err);
@@ -179,16 +188,22 @@
       },
     },
     created() {
+      this.$store.commit('showMenu');
       this.fetchMyBooks();
     },
+
   }
 </script>
 
 <style scoped>
   .small {
     max-width: 300px;
+    max-height: 300px;
     margin: auto;
     padding: 15px;
+  }
+  .link-none {
+    text-decoration: none;
   }
 </style>
 

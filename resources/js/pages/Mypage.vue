@@ -17,6 +17,10 @@
             </v-col>
           </v-row>
         </v-card>
+        <v-btn>
+          <v-icon left>menu_book</v-icon>
+          Add
+        </v-btn>
       </v-col>
 
       <v-col cols="12" sm="6">

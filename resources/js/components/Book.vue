@@ -6,8 +6,8 @@
             :src="book.largeImageUrl"
     >
     </v-img>
-    <v-card-text>{{ book.title }}</v-card-text>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-card-text class="text-hidden">{{ book.title }}</v-card-text>
+    <v-dialog v-if="edit" v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn
                 class="ma-2" outlined small fab
@@ -53,10 +53,18 @@
       </v-card>
     </v-dialog>
     <v-btn
+            v-if="destroy"
             class="ma-2" outlined small fab
             color="grey"
             @click="$emit('delete')">
       <v-icon small>delete</v-icon>
+    </v-btn>
+    <v-btn
+            v-if="add"
+            class="ma-2" outlined small fab
+            color="grey"
+            @click="$emit('delete')">
+      <v-icon small>add</v-icon>
     </v-btn>
   </v-card>
 </template>
@@ -67,10 +75,14 @@
       item: {
         type: Object,
         required: true,
-      }
+      },
+      edit: false,
+      destroy: false,
+      add: false,
     },
     data() {
       return {
+        book: {},
         dialog: false,
       }
     },
@@ -79,4 +91,13 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .text-hidden {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+</style>
 

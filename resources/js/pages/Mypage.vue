@@ -59,6 +59,8 @@
 
             <Book
                     :item="book"
+                    :edit="true"
+                    :destroy="true"
                     @delete="deleteBook(book.id)"
                     @updateBook="updateBook"
             />

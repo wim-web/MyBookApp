@@ -22,15 +22,15 @@
         OR
       </v-col>
     <v-col cols="12" sm="5" class="d-flex justify-center align-center">
-      <v-btn>
-        <v-icon left>menu_book</v-icon>
-        Custom Add
-      </v-btn>
+      <Dialog :role="'customAdd'"
+              :item="{largeImageUrl: 'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/noimage_01.gif?_ex=200x200'}"
+              @createBook="storeBook"
+      />
     </v-col>
     </v-row>
     <p v-show="showSearchResultCount">検索結果:{{ searchResultCount }}</p>
     <Loading v-show="loading"/>
-    <div v-if="searchResultCount > 0 && !loading">
+    <div v-show="searchResultCount > 0 && !loading">
       <v-card>
         <v-container>
           <v-row>
@@ -43,14 +43,14 @@
             >
 
               <Book
-                      :add="true"
+                      :role="'add'"
                       :item="book"
+                      @createBook="storeBook"
               />
 
             </v-col>
           </v-row>
           <paginate
-                  :page="page"
                   :pageCount="pageCount"
                   :containerClass="'pagination'"
                   :page-class="'page-item'"
@@ -70,6 +70,7 @@
 <script>
   import Book from "../components/Book";
   import Loading from "../components/Loading";
+  import Dialog from "../components/Dialog";
 
   export default {
     data() {
@@ -78,12 +79,13 @@
         inputAuthor: "",
         books: [],
         searchResultCount: -1,
-        page: '',
+        page: 3,
         pageCount: 0,
         loading: false
       };
     },
     components: {
+      Dialog,
       Book,
       Loading
     },
@@ -112,6 +114,15 @@
             .always(() => {
               this.loading = false;
             });
+      },
+      storeBook: async function (bookData) {
+        //todo:error handling
+        const response = await axios.post(`/books`, bookData).catch(err => err.response);
+        if (response.status === 201) {
+          alert('success');
+        } else {
+          alert('error');
+        }
       },
       setParams(inputTitle, page) {
         return {

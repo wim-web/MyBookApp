@@ -3,55 +3,14 @@
     <v-img
             class="white--text"
             max-height="200px"
-            :src="book.largeImageUrl"
+            :src="item.largeImageUrl"
     >
     </v-img>
-    <v-card-text class="text-hidden">{{ book.title }}</v-card-text>
-    <v-dialog v-if="edit" v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on }">
-        <v-btn
-                class="ma-2" outlined small fab
-                color="grey"
-                v-on="on"
-        >
-          <v-icon small>edit</v-icon>
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="headline">Edit Book</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field label="title" required v-model="book.title"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="author" required v-model="book.author"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="memo" required v-model="book.memo"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-select
-                        :items="['未読', '読み中', '完読', '欲しい']"
-                        label="status"
-                        required
-                        v-model="book.status"
-                ></v-select>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <div class="flex-grow-1"></div>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false; $emit('updateBook', book)">Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <v-card-text class="text-hidden">{{ item.title }}</v-card-text>
+    <Dialog :role="role" :item="item"
+    @createBook="notifyCreate"
+    @updateBook="notifyUpdate"
+    />
     <v-btn
             v-if="destroy"
             class="ma-2" outlined small fab
@@ -59,35 +18,33 @@
             @click="$emit('delete')">
       <v-icon small>delete</v-icon>
     </v-btn>
-    <v-btn
-            v-if="add"
-            class="ma-2" outlined small fab
-            color="grey"
-            @click="$emit('delete')">
-      <v-icon small>add</v-icon>
-    </v-btn>
   </v-card>
 </template>
 
 <script>
+  import Dialog from "./Dialog";
   export default {
     props: {
       item: {
         type: Object,
         required: true,
       },
-      edit: false,
+      role: {
+        type: String,
+        required: true,
+      },
       destroy: false,
-      add: false,
     },
-    data() {
-      return {
-        book: {},
-        dialog: false,
+    components: {
+      Dialog,
+    },
+    methods: {
+      notifyCreate: function (book) {
+        return this.$emit('createBook', book);
+      },
+      notifyUpdate: function (book) {
+        return this.$emit('updateBook', book);
       }
-    },
-    created() {
-      this.book = Object.assign({}, this.item)
     },
   };
 </script>

@@ -42,8 +42,15 @@
       </v-card-text>
       <v-card-actions>
         <div class="flex-grow-1"></div>
-        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="dialog = false; $emit(createOrUpdate, book)">Save
+        <v-btn color="blue darken-1" text @click="dialog = false;">Close</v-btn>
+        <v-btn color="blue darken-1" text
+               @click="
+               dialog = false;
+               $emit(createOrUpdate, book);
+               if (role === 'customAdd') {
+                book = {largeImageUrl: 'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/noimage_01.gif?_ex=200x200'}
+               }
+        ">Save
         </v-btn>
       </v-card-actions>
     </v-card>

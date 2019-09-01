@@ -33,6 +33,7 @@ import Paginate from 'vuejs-paginate';
 import App from './App.vue';
 import vuetify from "./vuetify/boot";
 import Chart from 'chart.js';
+import '@fortawesome/fontawesome-free/css/all.css'
 
 const createApp = async () => {
   await store.dispatch('checkIsLogin');

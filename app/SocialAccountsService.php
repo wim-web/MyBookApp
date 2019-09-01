@@ -22,6 +22,7 @@ class SocialAccountsService
                 $user = User::create([
                     'email' => $providerUser->getEmail(),
                     'name'  => $providerUser->getName(),
+                    'icon' => $provider->getAvatar(),
                 ]);
             }
 

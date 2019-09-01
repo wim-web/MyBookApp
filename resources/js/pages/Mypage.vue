@@ -1,148 +1,209 @@
 <template>
   <div>
-    <h2 class="text-center mb-4">Mypage</h2>
-    <Loading v-show="loading"/>
-    <div v-show="!loading">
-      <div class="row">
-        <div v-for="book in myBooks" :key="book.id" class="col-12 col-md-6 col-xl-4">
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="inline">
-                <div class="p-2">
-                  <p class="img-wrap">
-                    <img :src="book.largeImageUrl">
-                  </p>
-                </div>
-                <div class="p-2 inline__right">
-                  <div class="card-title">
-                    <a :href="book.itemUrl">{{ book.title }}</a>
-                  </div>
-                  <select v-model="book.status" v-on:change="updateStatus(book)" class="form-control">
-                    <option disabled value></option>
-                    <option value="want">買いたい</option>
-                    <option value="wait">積んでる</option>
-                    <option value="reading">読んでる</option>
-                    <option value="finish">読んだよ</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <button class="btn btn-danger" @click="deleteMyBook(book.id)">
-              delete
-            </button>
+    <div v-if="loading" class="pt-70px">
+      <Loading/>
+    </div>
+    <!--    user info-->
+    <div v-else>
+      <v-row class="ma-0">
+        <v-col class="ma-auto"
+               cols="12" sm="6" md="6">
+          <v-card>
+            <v-row>
+              <v-col cols="4" class="text-center">
+                <v-avatar color="grey" size=70 class="ma-auto">
+                  <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+                </v-avatar>
+              </v-col>
+              <v-col cols="8">
+                <p>{{ user.name }}</p>
+                <p><a :href=" url + '/public/' + user.name " target="_blank">public</a></p>
+              </v-col>
+            </v-row>
+          </v-card>
+          <div class="d-flex justify-center mt-5">
+            <router-link to="/search" class="link-none">
+              <v-btn>
+                <v-icon left>menu_book</v-icon>
+                Add
+              </v-btn>
+            </router-link>
           </div>
-        </div>
-      </div>
-      <div v-show="togglePaginate">
-        <paginate
-          :pageCount="pageCount"
-          :containerClass="'pagination'"
-          :page-class="'page-item'"
-          :page-link-class="'page-link'"
-          :prev-class="'page-item'"
-          :prev-link-class="'page-link'"
-          :next-class="'page-item'"
-          :next-link-class="'page-link'"
-          :clickHandler="fetchMybooksByPage">
-        </paginate>
-      </div>
+        </v-col>
+
+        <v-col cols="12" sm="6">
+          <v-card>
+            <PieChart :chart-data="chartData" class="small" :options="options"/>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <!--    books-->
+      <v-card>
+        <v-tabs
+                background-color="transparent"
+                color="black accent-4"
+                :grow=true
+        >
+          <v-tab
+                  v-for="item in statuses"
+                  :key="item"
+                  color="#FFE600"
+                  class="ma-0"
+                  @click="status = item">{{ item }}
+          </v-tab>
+        </v-tabs>
+        <v-container>
+          <v-row>
+            <v-col
+                    v-for="book in this.filteredBooks"
+                    :key="book.id"
+                    cols="6"
+                    sm="4"
+                    lg="3"
+            >
+
+              <Book
+                      :item="book"
+                      :destroy="true"
+                      :role="'edit'"
+                      @delete="deleteBook(book.id)"
+                      @updateBook="updateBook"
+              />
+
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+
+      <!--    tag-->
+      <!--    <v-chip-->
+      <!--            class="ma-2"-->
+      <!--            color="pink"-->
+      <!--            label-->
+      <!--            text-color="white"-->
+      <!--    >-->
+      <!--      <v-icon left>label</v-icon>-->
+      <!--      PHP-->
+      <!--    </v-chip>-->
+      <!--    <v-chip-->
+      <!--            class="ma-2"-->
+      <!--            color="pink"-->
+      <!--            label-->
+      <!--            text-color="white"-->
+      <!--    >-->
+      <!--      <v-icon left>label</v-icon>-->
+      <!--      Java-->
+      <!--    </v-chip>-->
     </div>
   </div>
 </template>
 
 <script>
-import Loading from "../components/Loading";
+  import Book from "../components/Book";
+  import PieChart from "../components/PieChart";
+  import Loading from "../components/Loading";
 
-export default {
-  data() {
-    return {
-      myBooks: [],
-      status: {},
-      pageCount: 0,
-      page: 1,
-      loading: false,
-      togglePaginate: false,
-    };
-  },
-  components: {
-    Loading
-  },
-  methods: {
-    async fetchMyBooks() {
-      //todo: error handling
-      this.loading = true;
-
-      const response = await axios.get(`/books?page=${this.page}`).catch(err => err.response);
-      if (response.status === 200) {
-        const booksArray = response.data.data;
-        this.setTogglePaginate(booksArray.length);
-
-        this.myBooks = booksArray;
-        this.pageCount = response.data.last_page;
-      } else {
-        alert('error');
-      }
-
-      this.loading = false;
-    },
-    async deleteMyBook(id) {
-      const deleteFlg = confirm("delete?");
-      if (!deleteFlg) return;
-
-      const response = await axios.delete(`/books/${id}`).catch(err => err.response);
-      if (response.status === 200) {
-        this.fetchMyBooks();
-      } else {
-        alert('error');
+  export default {
+    data() {
+      return {
+        loading: true,
+        user: {},
+        books: [],
+        url: location.origin,
+        statuses: ['すべて', '未読', '読み中', '完読', '欲しい'],
+        status: 'すべて',
+        options: {
+          legend: {
+            display: true,
+            position: 'top',
+          },
+          responsive: true,
+          maintainAspectRatio: true,
+        }
       }
     },
-    async updateStatus(selectedBook) {
-      //todo:error handling
-      const statusObj = { status: selectedBook.status };
-      const response = await axios.patch(`/books/${selectedBook.id}/status`, statusObj)
-                                  .catch(err => err);
-      if (response.status !== 200) return alert('error');
+    components: {
+      PieChart,
+      Book,
+      Loading,
     },
-    fetchMybooksByPage(page) {
-      this.page = page;
+    methods: {
+      async fetchMyBooks() {
+        const response = await axios.get(`/books?page=${this.page}`).catch(err => err.response);
+        if (response.status === 200) {
+          this.books = response.data.books;
+          this.user = response.data.user;
+        } else {
+          alert('error');
+        }
+        this.loading = false;
+      },
+      updateBook: async function (book) {
+        const response = await axios.patch(`/books/${book.id}`, book).catch(err => err);
+        this.fetchOrError(response.status)
+      },
+      async deleteBook(id) {
+        const deleteFlg = confirm("delete?");
+        if (!deleteFlg) return;
+
+        const response = await axios.delete(`/books/${id}`).catch(err => err.response);
+        this.fetchOrError(response.status)
+      },
+      fetchOrError(status) {
+        if (status === 200) {
+          this.fetchMyBooks();
+        } else {
+          alert('error');
+        }
+      },
+    },
+    computed: {
+      filteredBooks: function () {
+        if (this.status === 'すべて') return this.books;
+        return this.books.filter(function (r) {
+          if (r.status === this.status) return r;
+        }, this);
+      },
+      chartData: function () {
+        return {
+          labels: ['未読', '読み中', '完読', '欲しい'],
+          datasets: [
+            {
+              backgroundColor: [
+                'rgba(0,255,136,0.6)',
+                'rgba(0,170,255,0.6)',
+                'rgba(255,0,187,0.6)',
+                'rgba(255,230,0,0.6)',
+              ],
+              data: [
+                this.books.filter(r => r.status === '未読').length,
+                this.books.filter(r => r.status === '読み中').length,
+                this.books.filter(r => r.status === '完読').length,
+                this.books.filter(r => r.status === '欲しい').length,
+              ]
+            }
+          ],
+        };
+      },
+    },
+    created() {
+      this.$store.commit('showMenu');
       this.fetchMyBooks();
     },
-    setTogglePaginate(length) {
-      if (length > 0) {
-        this.togglePaginate = true;
-      } else {
-        this.togglePaginate = false;
-      }
-    }
-  },
-  created() {
-    this.fetchMyBooks();
-  },
-  beforeCreate() {
-    this.$store.commit("showMenu");
+
   }
-};
 </script>
 
-<style lang="scss" scoped>
-.inline {
-  display: flex;
-  &__right {
-    width: 100%;
+<style scoped>
+  .small {
+    max-width: 300px;
+    max-height: 300px;
+    margin: auto;
+    padding: 15px;
   }
-}
-
-.img-wrap {
-  width: 150px;
-  height: 200px;
-  overflow: hidden;
-}
-
-.img-wrap img {
-  width: 100%;
-}
-
-.pagination {
-  justify-content: center;
-}
+  .link-none {
+    text-decoration: none;
+  }
 </style>
+

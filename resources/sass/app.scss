@@ -6,3 +6,15 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.row {
+  margin: 0;
+}
+
+button {
+  outline: none !important;
+}
+
+.v-responsive__sizer {
+  padding-bottom: 100% !important;
+}

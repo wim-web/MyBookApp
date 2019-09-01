@@ -1,67 +1,60 @@
 <template>
-  <div class="row">
-    <div v-for="book in books" :key="book.id" class="col-12 col-md-6 col-xl-4">
-      <div class="card mb-3">
-        <div class="card-body">
-          <div class="inline">
-            <div class="p-2">
-              <p class="img-wrap">
-                <img :src="book.largeImageUrl">
-              </p>
-            </div>
-            <div class="p-2 inline__right">
-              <div class="card-title">
-                <a :href="book.itemUrl">{{ book.title }}</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="btn btn-outline-primary" @click="addBookMylist(book)">
-          mybookに追加
-        </button>
-      </div>
-    </div>
-  </div>
+  <v-card max-width="200px" class="ma-auto">
+    <v-img
+            class="white--text"
+            max-height="200px"
+            :src="item.largeImageUrl"
+    >
+    </v-img>
+    <v-card-text class="text-hidden">{{ item.title }}</v-card-text>
+    <Dialog :role="role" :item="item"
+    @createBook="notifyCreate"
+    @updateBook="notifyUpdate"
+    />
+    <v-btn
+            v-if="destroy"
+            class="ma-2" outlined small fab
+            color="grey"
+            @click="$emit('delete')">
+      <v-icon small>delete</v-icon>
+    </v-btn>
+  </v-card>
 </template>
 
 <script>
-export default {
-  props: {
-    books: {
-      type: Array,
-      required: true
-    }
-  },
-  methods: {
-    async addBookMylist(bookData) {
-      //todo:error handling
-      const response = await axios.post(`/books`, bookData).catch(err => err.response);
-      if (response.status === 201) {
-        alert('success');
-      } else {
-        alert('error');
+  import Dialog from "./Dialog";
+  export default {
+    props: {
+      item: {
+        type: Object,
+        required: true,
+      },
+      role: {
+        type: String,
+        required: true,
+      },
+      destroy: false,
+    },
+    components: {
+      Dialog,
+    },
+    methods: {
+      notifyCreate: function (book) {
+        return this.$emit('createBook', book);
+      },
+      notifyUpdate: function (book) {
+        return this.$emit('updateBook', book);
       }
-
-    }
-  }
-};
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
-.inline {
-  display: flex;
-  &__right {
-    width: 100%;
+  .text-hidden {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
-}
 
-.img-wrap {
-  width: 150px;
-  height: 200px;
-  overflow: hidden;
-}
-
-.img-wrap img {
-  width: 100%;
-}
 </style>
+

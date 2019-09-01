@@ -28,6 +28,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    /*
+     * relation
+     */
+
     public function books()
     {
         return $this->hasMany('App\Book')->orderBy('id', 'desc');
@@ -36,6 +40,20 @@ class User extends Authenticatable
     public function tags()
     {
         return $this->hasMany('App\Tag');
+    }
+
+    public function accounts()
+    {
+        return $this->hasMany('App\SocialAccount');
+    }
+
+    /*
+     * method
+     */
+
+    public function fetchBooks()
+    {
+        return $this->books()->get();
     }
 
 }

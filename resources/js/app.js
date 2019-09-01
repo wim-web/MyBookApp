@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -30,6 +31,8 @@ import store from './vuex/store';
 import router from './router';
 import Paginate from 'vuejs-paginate';
 import App from './App.vue';
+import vuetify from "./vuetify/boot";
+import Chart from 'chart.js';
 
 const createApp = async () => {
   await store.dispatch('checkIsLogin');
@@ -40,8 +43,10 @@ const createApp = async () => {
     el: '#app',
     router,
     store,
-    components: { App },
-    template: '<App />',
+    vuetify,
+    render: h => h(App),
+    // components: { App },
+    // template: '<App />',
   });
 };
 

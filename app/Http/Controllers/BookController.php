@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Book;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
@@ -12,24 +11,27 @@ class BookController extends Controller
     private $book;
     private $user;
 
-    public function __construct(Book $book, User $user)
+    public function __construct(Book $book)
     {
         $this->book = $book;
-        $this->user = $user;
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
     }
 
 
     public function index()
     {
-        $loginUsersBooks = $this->fetchLoginUsersBooks();
+        $books = $this->user->fetchBooks();
 
-        return $loginUsersBooks;
+        return ['books' => $books, 'user' => $this->user];
     }
 
     public function store(Request $request)
     {
         $bookData = $request->all();
-        $bookData['user_id'] = Auth::id();
+        $bookData['user_id'] = $this->user->id;
         $this->book->fill($bookData)->save();
 
         return response('success', 201);
@@ -42,27 +44,9 @@ class BookController extends Controller
         return response('success', 200);
     }
 
-    public function updateStatus(Request $request, Book $book)
+    public function update(Request $request, Book $book)
     {
-        $status = $request->all();
-        $book->fill($status)->save();
-        $loginUsersBooks = $this->fetchLoginUsersBooks();
-
-        return $loginUsersBooks;
-    }
-
-    public function showPublicPage(String $name)
-    {
-        $user = $this->user->where('name', $name)->first();
-        return  $user->books()->paginate(12);
-    }
-
-    // method
-
-    public function fetchLoginUsersBooks()
-    {
-        $loginUser = Auth::user();
-
-        return $loginUser->books()->paginate(12);
+        $book->fill($request->all())->save();
+        return response('success', 200);
     }
 }

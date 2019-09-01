@@ -99,7 +99,7 @@ export default {
   methods: {
     async fetchBooksByUser() {
       this.loading = true;
-      const response = await axios.get(`/public/${this.name}/show/?page=${this.page}`);
+      const response = await axios.get(`/public/${this.name}/show`);
       if (response.status === 200) {
         this.books = response.data.books;
         this.user = response.data.user;

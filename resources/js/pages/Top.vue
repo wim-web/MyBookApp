@@ -1,5 +1,11 @@
 <template>
   <div>
+
+    <v-img src="/storage/images/top.jpg" max-height="500px">
+      <v-overlay
+              absolute
+              color="grey"
+      >
     <div>
       <div class="text-center">
         <v-dialog
@@ -113,6 +119,8 @@
         </v-btn>
       </div>
     </div>
+      </v-overlay>
+    </v-img>
   </div>
 </template>
 

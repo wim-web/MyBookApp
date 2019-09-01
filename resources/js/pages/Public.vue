@@ -7,7 +7,6 @@
         <v-card>
           <v-row>
             <v-col cols="4" class="text-center">
-              <v-avatar color="grey" size=70 class="ma-auto">
                 <img :src="icon" alt="avatar">
               </v-avatar>
             </v-col>

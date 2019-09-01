@@ -3,6 +3,7 @@
     <v-img
             class="white--text"
             max-height="200px"
+            contain
             :src="item.largeImageUrl"
     >
     </v-img>

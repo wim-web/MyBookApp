@@ -1,16 +1,16 @@
 <template>
   <v-app>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <span class="navbar-brand">Navbar</span>
+      <span class="navbar-brand"><router-link to="/" class="link-none">Shelforest</router-link></span>
       <button
-        v-show="toggleMenu"
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+              v-show="toggleMenu"
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
       >
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -18,9 +18,6 @@
         <ul v-show="toggleMenu" class="navbar-nav">
           <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
             <router-link to="/mypage" class="nav-link">Mypage</router-link>
-          </li>
-          <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
-            <router-link to="/search" class="nav-link">Add</router-link>
           </li>
           <li class="nav-item" data-toggle="collapse" data-target="#navbarNav">
             <a href class="nav-link" @click.prevent="tryLogout()">Logout</a>
@@ -55,15 +52,11 @@ export default {
   },
   methods: {
     async tryLogout() {
-      this.loading = true;
-
       //todo:error handling
       const response = await axios.post("/logout").catch(err => err.response);
       if (response.status === 200) {
         this.$store.commit("logout");
       }
-      
-      this.loading = false;
       this.$router.push("/");
     }
   },
@@ -107,4 +100,9 @@ export default {
 .pt-70px {
   padding-top: 70px;
 }
+
+  .link-none {
+    text-decoration: none;
+    color: #fff;
+  }
 </style>

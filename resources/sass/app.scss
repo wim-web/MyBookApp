@@ -11,6 +11,10 @@
   margin: 0;
 }
 
-.v-btn--fab {
+button {
   outline: none !important;
+}
+
+.v-responsive__sizer {
+  padding-bottom: 100% !important;
 }

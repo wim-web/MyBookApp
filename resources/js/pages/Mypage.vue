@@ -1,98 +1,116 @@
 <template>
   <div>
+    <div v-if="loading" class="pt-70px">
+      <Loading/>
+    </div>
     <!--    user info-->
-    <v-row class="ma-0">
-      <v-col class="ma-auto"
-             cols="12" sm="6" md="6">
-        <v-card>
+    <div v-else>
+      <v-row class="ma-0">
+        <v-col class="ma-auto"
+               cols="12" sm="6" md="6">
+          <v-card>
+            <v-row>
+              <v-col cols="4" class="text-center">
+                <v-avatar color="grey" size=70 class="ma-auto">
+                  <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+                </v-avatar>
+              </v-col>
+              <v-col cols="8">
+                <p>{{ user.name }}</p>
+                <p><a :href=" url + '/public/' + user.name " target="_blank">public</a></p>
+              </v-col>
+            </v-row>
+          </v-card>
+          <div class="d-flex justify-center mt-5">
+            <router-link to="/search" class="link-none">
+              <v-btn>
+                <v-icon left>menu_book</v-icon>
+                Add
+              </v-btn>
+            </router-link>
+          </div>
+        </v-col>
+
+        <v-col cols="12" sm="6">
+          <v-card>
+            <PieChart :chart-data="chartData" class="small" :options="options"/>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <!--    books-->
+      <v-card>
+        <v-tabs
+                background-color="transparent"
+                color="black accent-4"
+                :grow=true
+        >
+          <v-tab
+                  v-for="item in statuses"
+                  :key="item"
+                  color="#FFE600"
+                  class="ma-0"
+                  @click="status = item">{{ item }}
+          </v-tab>
+        </v-tabs>
+        <v-container>
           <v-row>
-            <v-col cols="4" class="text-center">
-              <v-avatar color="grey" size=70 class="ma-auto">
-                <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
-              </v-avatar>
-            </v-col>
-            <v-col cols="8">
-              <p>name</p>
-              <p>url</p>
+            <v-col
+                    v-for="book in this.filteredBooks"
+                    :key="book.id"
+                    cols="6"
+                    sm="4"
+                    lg="3"
+            >
+
+              <Book
+                      :item="book"
+                      :destroy="true"
+                      :role="'edit'"
+                      @delete="deleteBook(book.id)"
+                      @updateBook="updateBook"
+              />
+
             </v-col>
           </v-row>
-        </v-card>
-      </v-col>
+        </v-container>
+      </v-card>
 
-      <v-col cols="12" sm="6">
-        <v-card>
-          <PieChart :chart-data="chartData" class="small" :options="options"/>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <!--    books-->
-    <v-card>
-      <v-tabs
-              background-color="transparent"
-              color="black accent-4"
-              :grow=true
-      >
-        <v-tab
-                v-for="item in statuses"
-                color="#FFE600"
-                class="ma-0"
-                @click="status = item">{{ item }}
-        </v-tab>
-      </v-tabs>
-      <v-container>
-        <v-row>
-          <v-col
-                  v-for="book in this.filteredBooks"
-                  :key="book.id"
-                  cols="6"
-                  sm="4"
-                  lg="3"
-          >
-
-            <Book
-                    :item="book"
-                    @delete="deleteBook(book.id)"
-                    @updateBook="updateBook"
-            />
-
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card>
-
-    <!--    tag-->
-<!--    <v-chip-->
-<!--            class="ma-2"-->
-<!--            color="pink"-->
-<!--            label-->
-<!--            text-color="white"-->
-<!--    >-->
-<!--      <v-icon left>label</v-icon>-->
-<!--      PHP-->
-<!--    </v-chip>-->
-<!--    <v-chip-->
-<!--            class="ma-2"-->
-<!--            color="pink"-->
-<!--            label-->
-<!--            text-color="white"-->
-<!--    >-->
-<!--      <v-icon left>label</v-icon>-->
-<!--      Java-->
-<!--    </v-chip>-->
+      <!--    tag-->
+      <!--    <v-chip-->
+      <!--            class="ma-2"-->
+      <!--            color="pink"-->
+      <!--            label-->
+      <!--            text-color="white"-->
+      <!--    >-->
+      <!--      <v-icon left>label</v-icon>-->
+      <!--      PHP-->
+      <!--    </v-chip>-->
+      <!--    <v-chip-->
+      <!--            class="ma-2"-->
+      <!--            color="pink"-->
+      <!--            label-->
+      <!--            text-color="white"-->
+      <!--    >-->
+      <!--      <v-icon left>label</v-icon>-->
+      <!--      Java-->
+      <!--    </v-chip>-->
+    </div>
   </div>
 </template>
 
 <script>
-  import Loading from "../components/Loading";
   import Book from "../components/Book";
   import PieChart from "../components/PieChart";
+  import Loading from "../components/Loading";
 
   export default {
     data() {
       return {
+        loading: true,
+        user: {},
         books: [],
-        loading: false,
+        url: location.origin,
         statuses: ['すべて', '未読', '読み中', '完読', '欲しい'],
         status: 'すべて',
         options: {
@@ -108,34 +126,32 @@
     components: {
       PieChart,
       Book,
-      Loading
+      Loading,
     },
     methods: {
       async fetchMyBooks() {
-        //todo: error handling
-        this.loading = true;
-
         const response = await axios.get(`/books?page=${this.page}`).catch(err => err.response);
         if (response.status === 200) {
-          this.books = response.data.data;
+          this.books = response.data.books;
+          this.user = response.data.user;
         } else {
           alert('error');
         }
-
         this.loading = false;
       },
       updateBook: async function (book) {
-        const response = await axios.patch(`/books/${book.id}`, book)
-            .catch(err => err);
-        if (response.status !== 200) return alert('error');
-        this.fetchMyBooks();
+        const response = await axios.patch(`/books/${book.id}`, book).catch(err => err);
+        this.fetchOrError(response.status)
       },
       async deleteBook(id) {
         const deleteFlg = confirm("delete?");
         if (!deleteFlg) return;
 
         const response = await axios.delete(`/books/${id}`).catch(err => err.response);
-        if (response.status === 200) {
+        this.fetchOrError(response.status)
+      },
+      fetchOrError(status) {
+        if (status === 200) {
           this.fetchMyBooks();
         } else {
           alert('error');
@@ -161,35 +177,33 @@
                 'rgba(255,230,0,0.6)',
               ],
               data: [
-                this.books.filter(function (r) {
-                  return r.status === '未読'
-                }).length,
-                this.books.filter(function (r) {
-                  return r.status === '読み中'
-                }).length,
-                this.books.filter(function (r) {
-                  return r.status === '完読'
-                }).length,
-                this.books.filter(function (r) {
-                  return r.status === '欲しい'
-                }).length,
+                this.books.filter(r => r.status === '未読').length,
+                this.books.filter(r => r.status === '読み中').length,
+                this.books.filter(r => r.status === '完読').length,
+                this.books.filter(r => r.status === '欲しい').length,
               ]
             }
           ],
         };
-      }
+      },
     },
     created() {
+      this.$store.commit('showMenu');
       this.fetchMyBooks();
     },
-  };
+
+  }
 </script>
 
 <style scoped>
   .small {
     max-width: 300px;
+    max-height: 300px;
     margin: auto;
     padding: 15px;
+  }
+  .link-none {
+    text-decoration: none;
   }
 </style>
 

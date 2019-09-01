@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <v-img src="/storage/images/top.jpg" max-height="500px">
+    <v-img src="https://loremflickr.com/640/360/book?lock=22" max-height="500px">
       <v-overlay
               absolute
               color="grey"

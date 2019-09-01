@@ -107,7 +107,7 @@
         </v-dialog>
       </div>
       <div class="text-center mt-5">
-        <v-btn color="blue lighten-2" dark>
+        <v-btn color="blue lighten-2 link-none" dark href="/login/twitter">
           <v-icon left color="white">fab fa-twitter</v-icon>
           Sign in or Sign up
         </v-btn>
@@ -182,5 +182,9 @@
   .form {
     max-width: 500px;
     margin: 0 auto;
+  }
+
+  .link-none {
+    text-decoration: none;
   }
 </style>

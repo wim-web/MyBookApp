@@ -8,7 +8,7 @@
           <v-row>
             <v-col cols="4" class="text-center">
               <v-avatar color="grey" size=70 class="ma-auto">
-                <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
+                <img ;src="icon" alt="avatar">
               </v-avatar>
             </v-col>
             <v-col cols="8">
@@ -137,6 +137,10 @@ export default {
         ],
       };
     },
+    icon: function () {
+      if (this.user.icon) return this.user.icon;
+      return 'https://vuetifyjs.com/apple-touch-icon-180x180.png';
+    }
   },
   created() {
     this.fetchBooksByUser();

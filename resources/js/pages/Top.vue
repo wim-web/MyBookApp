@@ -1,5 +1,6 @@
 <template>
   <div class="text-center">
+    <a href="/login/twitter"  class="btn btn-default btn-md">Log in with Github</a>
     <v-dialog
             v-model="indialog"
             width="500"

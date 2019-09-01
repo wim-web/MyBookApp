@@ -19,6 +19,8 @@ Route::get('/public/{name}/show', 'PublicController');
 
 Route::resource('books', 'BookController');
 
+Route::get('login/{provider}',          'Auth\SocialAccountController@redirectToProvider');
+Route::get('login/{provider}/callback', 'Auth\SocialAccountController@handleProviderCallback');
 Route::post('/login', 'Auth\LoginController@login');
 Route::post('/logout', 'Auth\LoginController@logout');
 Route::post('/register', 'Auth\RegisterController@register');

@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Tag');
     }
 
+    public function accounts()
+    {
+        return $this->hasMany('App\SocialAccount');
+    }
+
     /*
      * method
      */
